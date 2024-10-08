@@ -1,0 +1,90 @@
+<div class="container py-5">
+  <!-- Header Section -->
+  <div class="row mb-4 align-items-center">
+    <div class="col-6">
+      <h1 class="mb-4">รายละเอียดของวิชา</h1>
+    </div>
+    <div class="col-6 text-end">
+      <button class="btn btn-secondary" (click)="goBack()">
+        <i class="fas fa-arrow-left me-2"></i> ย้อนกลับ
+      </button>
+    </div>
+  </div>
+
+  <!-- Subject Detail Section -->
+  <div class="mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">{{ subject.subject_name }} ({{ subject.subject_engname }})</h3>
+        <strong class="card-text">เวลาเรียน:</strong> {{ subject.time_start }} - {{ subject.time_end }}<br>
+        <strong class="card-text">รหัสวิชา:</strong> {{ subject.id_subject }}<br>
+        <strong class="card-text">หมู่เรียน:</strong> {{ subject.section }}<br/>
+        <strong class="card-text">ภาคเรียน:</strong> {{ subject.semester }}<br/>
+        <strong class="card-text">ปีการศึกษา:</strong> {{ subject.year }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Students Section -->
+  <div *ngIf="students.length > 0" class="mb-4">
+    <h2 class="mb-3">ข้อมูลนิสิตในวิชานี้ (ทั้งหมด {{ totalStudents }} คน)</h2>
+    
+    <!-- Search and Reset Section -->
+    <div class="input-group mb-4">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="ค้นหาชื่อหรือรหัสนิสิต"
+        [(ngModel)]="searchQuery"
+        (input)="filterStudents()"
+      />
+      <button class="btn btn-outline-danger" type="button" (click)="resetSearch()">
+        <i class="fas fa-sync-alt"></i> รีเซ็ต
+      </button>
+    </div>
+
+    <!-- Students Table -->
+    <div class="table-responsive">
+      <table class="table table-striped text-center">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>รหัสนิสิต</th>
+            <th>ชื่อ-สกุล</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let student of paginatedStudents; let i = index">
+            <td>{{ i + 1 + (currentPage - 1) * pageSize }}</td>
+            <td>{{ student.std_id }}</td>
+            <td>{{ student.title }}{{ student.fname }} {{ student.lname }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination Controls -->
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [ngClass]="{'disabled': currentPage === 1}">
+          <a class="page-link" (click)="prevPage()" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item" *ngFor="let page of pages" [ngClass]="{'active': page === currentPage}">
+          <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" [ngClass]="{'disabled': currentPage === totalPages}">
+          <a class="page-link" (click)="nextPage()" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- No Students Section -->
+  <div *ngIf="students.length === 0" class="text-center">
+    <p>ไม่มีข้อมูลนิสิตในวิชานี้</p>
+  </div>
+</div>

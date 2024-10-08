@@ -1,0 +1,80 @@
+<div class="container py-5">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">เลือกรายวิชา</h4>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label for="subjectSelect" class="form-label">วิชาที่ลงทะเบียน:</label>
+        <select id="subjectSelect" class="form-select" [(ngModel)]="selectedSubjectId" (change)="onSubjectChange()">
+          <option value="" disabled selected hidden>--- กรุณาเลือกรายวิชา ---</option>
+          <option *ngFor="let subject of subjects" [value]="subject.subject_id">
+            {{ subject.subject_name }} ({{ subject.subject_engname }})
+          </option>
+        </select>
+      </div>
+
+      <!-- Month Dropdown -->
+      <div class="d-flex align-items-end mb-4">
+        <div class="me-2">
+          <label for="month-dropdown" class="form-label fs-5">เดือน:</label>
+          <select id="month-dropdown" class="form-select" [(ngModel)]="selectedMonth" (change)="filterData()">
+            <option value="" disabled selected hidden>--เลือกเดือน--</option>
+            <option *ngFor="let month of months" [value]="month.value">
+              {{ month.label }}
+            </option>
+          </select>
+        </div>
+        <button class="btn btn-danger" (click)="resetFilters()">
+          <i class="fas fa-sync-alt"></i> รีเซ็ต
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Attendance Summary and Chart -->
+  <div *ngIf="selectedSubjectId && filteredAttendanceRecords.length > 0" class="card mt-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">สรุปการเข้าเรียน</h5>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>มาเรียน:</strong> {{ attendanceSummary.present }} ครั้ง</li>
+        <li class="list-group-item"><strong>มาสาย:</strong> {{ attendanceSummary.late }} ครั้ง</li>
+        <li class="list-group-item"><strong>ขาดเรียน:</strong> {{ attendanceSummary.absent }} ครั้ง</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Alert for unselected subject and month -->
+  <div *ngIf="!selectedSubjectId" class="alert alert-danger mt-4">
+    กรุณาเลือกรายวิชาและเดือนเพื่อแสดงข้อมูลการเข้าเรียน
+  </div>
+  
+  <!-- Alert when subject is selected but month is not selected -->
+  <div *ngIf="selectedSubjectId && !selectedMonth" class="alert alert-info mt-4">
+    กรุณาเลือกเดือนเพื่อแสดงรายงานการเข้าเรียน
+  </div>
+
+  <div *ngIf="selectedSubjectId && filteredAttendanceRecords.length === 0" class="alert alert-warning mt-4">
+    ไม่มีข้อมูลการเช็คชื่อสำหรับรายวิชานี้ในเดือนที่เลือก
+  </div>
+
+  <div *ngIf="selectedSubjectId && attendanceRecords.length === 0" class="alert alert-warning mt-4">
+    ไม่มีข้อมูลการเช็คชื่อสำหรับรายวิชานี้
+  </div>
+
+  <div *ngIf="selectedMonth" class="card mt-4">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">
+        สถิติการเข้าชั้นเรียน
+        <span *ngIf="selectedMonth"> - {{ getMonthLabel(selectedMonth) }}</span>
+      </h4>
+    </div>
+    <div class="date-info mt-2">
+      <p class="fs-5 text-dark">{{ displayDateInfo }}</p>
+    </div>
+    <div class="card-body">
+      <canvas #chartCanvas></canvas>
+    </div>
+  </div>
+</div>

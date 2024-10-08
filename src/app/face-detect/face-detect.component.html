@@ -1,0 +1,34 @@
+<div class="container py-5">
+  <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white text-center">
+      <h1 class="mb-0">การตรวจสอบใบหน้า</h1>
+    </div>
+    <div class="card-body text-center">
+
+      <div class="d-flex justify-content-center mb-4">
+        <div class="position-relative">
+          <video #videoElement class="img-fluid border rounded" width="720" height="560" autoplay muted></video>
+          <canvas #canvasElement class="position-absolute top-0 start-0 w-100 h-100" style="pointer-events: none;"></canvas>
+        </div>
+      </div>
+
+      <button (click)="verifyFace()" class="btn btn-primary mb-4">
+        <i class="fas fa-check-circle me-2"></i>ตรวจสอบใบหน้า
+      </button>
+
+      <br>
+
+      <button (click)="goBack()" class="btn btn-secondary">
+        <i class="fas fa-arrow-left me-2"></i>ย้อนกลับ
+      </button>
+
+      <!-- Display result -->
+      <div *ngIf="verificationResult" class="verification-result text-start mt-4">
+        <h2>ผลการตรวจสอบ</h2>
+        <p><strong>ชื่อ:</strong> {{ verificationResult.fname || 'ไม่พบชื่อ' }} {{ verificationResult.lname || 'ไม่พบนามสกุล' }}</p>
+        <p><strong>ระยะทาง:</strong> {{ verificationResult.distance || 'N/A' }}</p>
+        <p><strong>ผลลัพธ์:</strong> {{ verificationResult.match ? 'ตรง' : 'ไม่ตรง' }}</p>
+      </div>
+    </div>
+  </div>
+</div>

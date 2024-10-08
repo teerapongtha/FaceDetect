@@ -1,0 +1,40 @@
+.btn-info {
+    color: #fff;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+  }
+  
+  .btn-warning {
+    color: #212529;
+    background-color: #ffc107;
+    border-color: #ffc107;
+  }
+  
+  .btn-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  .list-group-item {
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  h5 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    margin-bottom: 0.5rem;
+  }
+  
+  .container {
+    max-width: 960px;
+  }
+  .btn-custom-height {
+    height: 38px; /* Adjust this value as needed */
+    align-self: flex-end;
+  }
+  

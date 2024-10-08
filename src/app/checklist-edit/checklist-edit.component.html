@@ -1,0 +1,59 @@
+<div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg">
+          <div class="card-header text-center bg-primary text-white">
+            <h1 class="display-4">แก้ไขรายการ</h1>
+            <h3 class="lead">รายละเอียด/การเช็คชื่อ</h3>
+          </div>
+          <div class="card-body">
+            <form method="post" (ngSubmit)="UpdateChecklist()" #editForm="ngForm">
+              <div class="mb-3">
+                <label for="head" class="form-label">หัวข้อ:</label>
+                <textarea id="head" name="head" rows="2" class="form-control" [(ngModel)]="ChecklistUpdate.title" required></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="details" class="form-label">รายละเอียด:</label>
+                <textarea id="details" name="details" rows="4" class="form-control" [(ngModel)]="ChecklistUpdate.detail" required></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="date" class="form-label">ระบุวันที่:</label>
+                <mat-form-field class="w-100">
+                  <input matInput [matDatepicker]="picker" id="date" name="date" [(ngModel)]="ChecklistUpdate.date" required placeholder="เลือกวันที่...">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="time_start" class="form-label">ระบุเวลาเริ่มต้นการเช็คชื่อ:</label>
+                  <input type="time" id="time_start" name="time_start" class="form-control" [(ngModel)]="ChecklistUpdate.time_start" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="time_end" class="form-label">ระบุเวลาสิ้นสุดการเช็คชื่อ:</label>
+                  <input type="time" id="time_end" name="time_end" class="form-control" [(ngModel)]="ChecklistUpdate.time_end" required>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="subject-dropdown" class="form-label">เลือกรายวิชา:</label>
+                <select id="subject-dropdown" name="subject_id" class="form-select" [(ngModel)]="ChecklistUpdate.subject_id" required>
+                  <option *ngFor="let subject of subjects" [value]="subject.subject_id">
+                    {{ subject.subject_name }} ({{ subject.subject_engname }}) - หมู่เรียนที่ : {{ subject.section }} . ภาคเรียนที่ : {{ subject.semester }} . ปีการศึกษา {{ subject.year }} 
+                  </option>
+                </select>
+              </div>
+              <div class="d-flex justify-content-between mt-4">
+                <button class="btn btn-primary" type="submit">
+                  <i class="far fa-edit"></i> แก้ไขรายการ
+                </button>
+                <a routerLink="/checklist-manage" class="btn btn-secondary">
+                  <i class="far fa-arrow-alt-circle-left"></i> ย้อนกลับ
+                </a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

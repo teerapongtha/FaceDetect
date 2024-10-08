@@ -1,0 +1,224 @@
+// .contain-student {
+//     display: grid;
+//     grid-template-columns: auto auto;
+//     justify-content: center;
+//     font-size: 18px;
+// }
+// .text-student{
+//     font-size: 20px;
+// }
+// .btn-import {
+//     background-color: #45a049;
+//     border-radius: 15px;
+//     padding: 5px 10px;
+//     font-size: 18px;
+//     color: white;
+//     border: none;
+// }
+// .btn-import:hover {
+//     background-color: #4cb351;
+// }
+
+// .btn-add {
+//     background-color:#0056b3;
+//     border-radius: 15px;
+//     padding: 5px 10px;
+//     font-size: 18px;
+//     color: white;
+//     border: none;
+// }
+// .btn-add:hover {
+//     background-color: #006ce0;
+// }
+
+// .text-h {
+//     text-align: left;
+//     margin-top: 20px;
+// }
+
+// .img-h {
+//     text-align: center;
+// }
+
+// .img-home {
+//     height: 500px;
+// }
+
+// h1 {
+//     font-size: 50px;
+// }
+
+// h3 {
+//     font-size: 36px;
+// }
+
+// table {
+//     width: 1080px;
+//     border-collapse: collapse;
+//     margin-top: 10px;
+//     border-radius: 10px;
+//     overflow: hidden;
+// }
+
+// th,
+// td {
+//     border: 1px solid #ddd;
+//     padding: 8px;
+//     text-align: center;
+// }
+
+// th {
+//     background-color: #45a049;
+//     font-weight: bold;
+//     color: #fff;
+// }
+
+// tbody tr:nth-child(even) {
+//     background-color: #f2f2f2;
+// }
+
+// tbody tr:hover {
+//     background-color: #ddd;
+// }
+
+// a {
+//     // text-decoration: none;
+//     color: #000;
+// }
+// .student-profile {
+//     background-color: #45a049;
+//     border: none;
+//     color: white;
+//     padding: 15px 20px;
+//     text-align: center;
+//     text-decoration: none;
+//     display: inline-block;
+//     font-size: 16px;
+//     margin: 4px 10px;
+//     cursor: pointer;
+//     border-radius: 12px;
+//     border: 2px solid #4CAF50;
+// }
+// .student-profile:hover {
+//     background-color: #4cb351;
+// }
+
+// .student-edit {
+//     background-color: brown;
+//     border: none;
+//     color: white;
+//     padding: 15px 20px;
+//     text-align: center;
+//     text-decoration: none;
+//     display: inline-block;
+//     font-size: 16px;
+//     margin: 4px 2px;
+//     cursor: pointer;
+//     border-radius: 12px;
+//     border: 2px solid rgb(206, 52, 52);
+// }
+// .student-edit:hover {
+//     background-color: rgb(206, 52, 52);
+// }
+
+// .dropdown {
+//     margin-top: 20px;
+//     margin-bottom: 20px;
+// }
+
+// .dropdown label {
+//     font-size: 20px;
+//     margin-right: 10px;
+// }
+
+// .dropdown select {
+//     font-size: 18px;
+//     padding: 8px;
+//     border-radius: 5px;
+// }
+// .search-box{
+//     display: flex; 
+//     align-items: center; 
+//     margin-top: 10px;
+// }
+
+// .btn-search {
+//     background-color: #007bff;
+//     border: none;
+//     color: white;
+//     padding: 10px 20px;
+//     text-align: center;
+//     text-decoration: none;
+//     display: inline-block;
+//     font-size: 18px;
+//     margin-left: 10px;
+//     border-radius: 12px;
+//     cursor: pointer;
+//     transition: background-color 0.3s;
+// }
+
+// .btn-search:hover {
+//     background-color: #0056b3;
+// }
+
+// .btn-reset {
+//     background-color: #dc3545;
+//     border: none;
+//     color: white;
+//     padding: 10px 20px;
+//     text-align: center;
+//     text-decoration: none;
+//     display: inline-block;
+//     font-size: 18px;
+//     margin-left: 10px;
+//     border-radius: 12px;
+//     cursor: pointer;
+//     transition: background-color 0.3s;
+// }
+
+// .btn-reset:hover {
+//     background-color: #c82333;
+// }
+// /* ขนาดหน้าจอเล็กกว่า 768px */
+// @media screen and (max-width: 768px) {
+//     table {
+//         width: 100%; /* ขยายตารางให้เต็มรูปแบบ */
+//     }
+
+//     th,
+//     td {
+//         font-size: 14px; /* ลดขนาดตัวอักษรในตาราง */
+//         padding: 6px; /* ปรับขนาดเพื่อให้สัมพันธ์กับขนาดตัวอักษร */
+//     }
+
+//     .btn-import,
+//     .btn-add,
+//     .student-profile,
+//     .student-edit {
+//         font-size: 14px; /* ลดขนาดตัวอักษรของปุ่มและลิงก์ */
+//         padding: 8px 12px; /* ปรับขนาดเพื่อให้สัมพันธ์กับขนาดตัวอักษร */
+//         margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่าง */
+//     }
+// }
+
+// /* ขนาดหน้าจอเล็กกว่า 576px */
+// @media screen and (max-width: 576px) {
+//     table {
+//         width: 100%; /* ขยายตารางให้เต็มรูปแบบ */
+//     }
+
+//     th,
+//     td {
+//         font-size: 12px; /* ลดขนาดตัวอักษรในตาราง */
+//         padding: 4px; /* ปรับขนาดเพื่อให้สัมพันธ์กับขนาดตัวอักษร */
+//     }
+
+//     .btn-import,
+//     .btn-add,
+//     .student-profile,
+//     .student-edit {
+//         font-size: 12px; /* ลดขนาดตัวอักษรของปุ่มและลิงก์ */
+//         padding: 6px 10px; /* ปรับขนาดเพื่อให้สัมพันธ์กับขนาดตัวอักษร */
+//         margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่าง */
+//     }
+// }

@@ -1,0 +1,28 @@
+.btn-custom-height {
+    height: 38px; /* Adjust to match input height */
+    line-height: 1.5; /* Adjust to center text vertically */
+    align-items: center;
+    padding: 0 0.75rem; /* Adjust horizontal padding */
+  }
+  
+  .btn-group .btn {
+    margin-right: 0.5rem; /* Adjust as needed for spacing */
+    border-radius: 0.25rem;
+  }
+  
+  .btn {
+    border-radius: 0.25rem; /* Rounded corners for buttons */
+  }
+
+  /* Ensure buttons align correctly in responsive view */
+  @media (max-width: 767.98px) {
+    .btn-group {
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn-group .btn {
+      margin-bottom: 0.5rem; /* Ensure buttons have some space below them */
+    }
+  }
+  

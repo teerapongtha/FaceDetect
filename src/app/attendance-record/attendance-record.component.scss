@@ -1,0 +1,98 @@
+// .container {
+//   margin: 20px auto;
+//   max-width: 800px;
+
+//   h1 {
+//     text-align: center;
+//     margin-bottom: 20px;
+//   }
+
+//   .search-bar {
+//     margin-bottom: 20px;
+//     text-align: center;
+
+//     input {
+//       padding: 8px;
+//       width: 100%;
+//       max-width: 400px;
+//       border: 1px solid #ddd;
+//       border-radius: 5px;
+//       font-size: 16px;
+//     }
+//   }
+
+//   .table {
+//     width: 100%;
+//     border-collapse: collapse;
+//     margin-bottom: 20px;
+
+//     th, td {
+//       border: 1px solid #ddd;
+//       padding: 8px;
+//       text-align: center;
+//     }
+
+//     th {
+//       background-color: #f2f2f2;
+//     }
+//   }
+
+//   .btn-back {
+//     display: block;
+//     margin: 20px auto;
+//     padding: 10px 20px;
+//     background-color: #007bff;
+//     color: white;
+//     border: none;
+//     border-radius: 5px;
+//     cursor: pointer;
+//     text-align: center;
+
+//     i {
+//       margin-right: 5px;
+//     }
+
+//     &:hover {
+//       background-color: #0056b3;
+//     }
+//   }
+// }
+
+.btn-danger{
+  margin-left: 5px;
+}
+/* Remove underline from pagination controls */
+.pagination-controls {
+  list-style-type: none; /* Remove list bullets */
+  padding-left: 0; /* Remove left padding */
+  margin: 0; /* Remove margin */
+}
+
+.pagination-controls li {
+  display: inline; /* Display items inline */
+  margin: 0; /* Remove margin */
+}
+
+.pagination-controls a, .pagination-controls span {
+  text-decoration: none; /* Remove underline */
+}
+
+.pagination-controls a {
+  border: 1px solid #ccc; /* Add border */
+  padding: 5px 10px; /* Add padding */
+  margin: 0 2px; /* Add margin between buttons */
+  border-radius: 4px; /* Add rounded corners */
+  color: #007bff; /* Button color */
+}
+
+.pagination-controls a:hover {
+  background-color: #e9ecef; /* Hover background color */
+  color: #0056b3; /* Hover text color */
+}
+
+.pagination-controls span.current {
+  background-color: #007bff; /* Current page background color */
+  color: #fff; /* Current page text color */
+  border: 1px solid #007bff; /* Current page border */
+}
+

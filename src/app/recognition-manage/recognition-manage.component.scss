@@ -1,0 +1,38 @@
+// .container {
+//     max-width: 960px;
+//   }
+  
+//   .table {
+//     th, td {
+//       vertical-align: middle;
+//       text-align: center;
+//     }
+  
+//     .img-thumbnail {
+//       border: none;
+//       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+//     }
+  
+//     .btn-outline-danger {
+//       transition: background-color 0.3s, color 0.3s;
+  
+//       &:hover {
+//         background-color: #dc3545;
+//         color: white;
+//       }
+//     }
+//   }
+  
+//   .btn-group {
+//     button {
+//       min-width: 150px;
+//       width: 100%; /* ทำให้ปุ่ม responsive ตามขนาดหน้าจอ */
+//     }
+//   }
+  
+//   @media (min-width: 768px) {
+//     .btn-group button {
+//       width: auto; /* ปรับขนาดปุ่มตามขนาดหน้าจอ */
+//     }
+//   }
+  

@@ -1,0 +1,62 @@
+<div class="container py-4">
+    <!-- Student Information Card -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">ข้อมูลนิสิต</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="student-info-item">
+                        <strong>รหัสนิสิต:</strong> {{ studentDetails.std_id }}
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="student-info-item">
+                        <strong>ชื่อ-สกุล:</strong> {{ studentDetails.fname }} {{ studentDetails.lname }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Month Dropdown Section -->
+    <div class="d-flex align-items-end mb-4">
+        <div class="me-2">
+            <label for="month-dropdown" class="form-label fs-5">เดือน:</label>
+            <select id="month-dropdown" class="form-select" [(ngModel)]="selectedMonth" (change)="filterData()">
+                <option value="" disabled hidden>--เลือกเดือน--</option>
+                <option *ngFor="let month of months" [value]="month.value">
+                    {{ month.label }}
+                </option>
+            </select>
+        </div>
+        <button class="btn btn-danger" (click)="resetFilters()">
+            <i class="fas fa-sync-alt"></i> รีเซ็ต
+        </button>
+    </div>
+
+    <!-- Alert Section -->
+    <div *ngIf="filteredAttendanceRecords.length === 0 && selectedMonth" class="mt-4 alert alert-danger text-center">
+        ไม่มีข้อมูลสำหรับเดือนนี้
+    </div>
+
+    <!-- Alert Section -->
+    <div *ngIf="!selectedMonth" class="mt-4 alert alert-danger text-center">
+        กรุณาเลือกเดือนเพื่อแสดงข้อมูลรายงาน
+    </div>
+
+
+    <!-- Chart Section -->
+    <div *ngIf="selectedMonth" class="card">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                สถิติการเข้าชั้นเรียน
+                <span *ngIf="selectedMonth"> - {{ getMonthLabel(selectedMonth) }}</span>
+            </h4>
+        </div>
+        <div class="card-body">
+            <canvas #chartCanvas></canvas>
+        </div>
+    </div>
+</div>

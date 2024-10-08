@@ -1,0 +1,52 @@
+<div class="contain-report">
+    <div class="text-h">
+        <h3>รายงานผลการเข้าเรียนแบบรายสัปดาห์</h3>
+        <a routerLink="/report-personal"><button class="btn-report-personal"><i class="fas fa-user"></i> รายบุคคล</button></a>
+        <a routerLink="/report"><button class="btn-report-all"><i class="fas fa-calendar-alt"></i> รายงานรวม</button></a>
+        <a routerLink="/report"><button class="btn-export" style="margin-left: 10px;"><i class="fas fa-file-export"></i> Export to Excel</button></a>
+        <div class="dropdown">
+            <label for="subject-dropdown" style="font-size: 22px;">เลือกรายวิชา:</label>
+            <select id="subject-dropdown">
+                <option value="subject1">เว็บเทคโนโลยีและเว็บบริการ (Web technology and web services)</option>
+                <option value="subject2">การแปลภาษาคอมพิวเตอร์ (Compiler)</option>
+            </select>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>สัปดาห์ที่</th>
+                    <th>วันที่เข้าเรียน</th>
+                    <th>วิชา</th>
+                    <th>รายละเอียด</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>2 มกราคม 2567</td>
+                    <td>Web Application</td>
+                    <td><a routerLink="/report-week-detail">ดูข้อมูล</a></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>9 มกราคม 2567</td>
+                    <td>Web Application</td>
+                    <td><a routerLink="/report-week-detail">ดูข้อมูล</a></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>16 มกราคม 2567</td>
+                    <td>Web Application</td>
+                    <td><a routerLink="/report-week-detail">ดูข้อมูล</a></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>23 มกราคม 2567</td>
+                    <td>Web Application</td>
+                    <td><a routerLink="/report-week-detail">ดูข้อมูล</a></td>
+                </tr>
+            </tbody>
+        </table><br>
+        <p><strong>จำนวนสัปดาห์ทั้งหมด: </strong>4 สัปดาห์</p>
+    </div>
+</div>

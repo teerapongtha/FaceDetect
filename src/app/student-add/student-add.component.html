@@ -1,0 +1,72 @@
+<div class="container py-4">
+  <!-- Page Header -->
+  <div class="row mb-4 justify-content-center">
+    <!-- Center the card within the row -->
+    <div class="col-12 col-md-10 col-lg-8">
+      <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+          <h1 class="display-4">เพิ่มข้อมูลนิสิต</h1>
+          <h3 class="lead">กรุณากรอกข้อมูลนิสิต</h3>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="StudentAdd()" #addStudentForm="ngForm">
+            <!-- Student ID Field -->
+            <div class="mb-3">
+              <label for="student-id" class="form-label">รหัสนิสิต :</label>
+              <input type="text" class="form-control" id="student-id" name="studentId" placeholder="ระบุรหัสนิสิต" [(ngModel)]="std_id" required>
+            </div>
+
+            <!-- Title Dropdown -->
+            <div class="mb-3">
+              <label for="title-dropdown" class="form-label">คำนำหน้า :</label>
+              <select id="title-dropdown" name="title" class="form-select" [(ngModel)]="title" required>
+                <option value="" disabled selected hidden>--กรุณาเลือกคำนำหน้า--</option>
+                <option value="นาย">นาย</option>
+                <option value="นางสาว">นางสาว</option>
+              </select>
+            </div>
+
+            <!-- First Name Field -->
+            <div class="mb-3">
+              <label for="fullname" class="form-label">ชื่อ :</label>
+              <input type="text" class="form-control" id="fullname" name="firstname" placeholder="ระบุชื่อ" [(ngModel)]="fname" required>
+            </div>
+
+            <!-- Last Name Field -->
+            <div class="mb-3">
+              <label for="lastname" class="form-label">สกุล :</label>
+              <input type="text" class="form-control" id="lastname" name="lastname" placeholder="ระบุสกุล" [(ngModel)]="lname" required>
+            </div>
+
+            <!-- Email Field -->
+            <div class="mb-3">
+              <label for="email" class="form-label">อีเมล :</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="ระบุอีเมล" [(ngModel)]="email" required>
+            </div>
+
+            <!-- Subject Dropdown -->
+            <div class="mb-4">
+              <label for="subject-dropdown" class="form-label">เลือกรายวิชา:</label>
+              <select id="subject-dropdown" name="subject_id" class="form-select" [(ngModel)]="subject_id" required>
+                <option value="" disabled selected hidden>--กรุณาเลือกรายวิชา--</option>
+                <option *ngFor="let subject of subjects" [value]="subject.subject_id">
+                  {{ subject.subject_name }} ({{ subject.subject_engname }}) - หมู่เรียนที่ : {{ subject.section }} . ภาคเรียนที่ : {{ subject.semester }} . ปีการศึกษา {{ subject.year }} 
+                </option>
+              </select>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-between">
+              <button type="submit" class="btn btn-primary">
+                <i class="far fa-plus-square me-2"></i> บันทึกข้อมูล
+              </button>
+              <a routerLink="/student-manage" class="btn btn-secondary">
+                <i class="far fa-arrow-alt-circle-left me-2"></i> ย้อนกลับ
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

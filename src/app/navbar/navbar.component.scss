@@ -1,0 +1,54 @@
+.navbar {
+  width: 100%; /* Full-width navbar */
+  padding-left: 0; /* Remove left padding */
+  padding-right: 0; /* Remove right padding */
+}
+
+.container {
+  max-width: 100%; /* Full-width container */
+  padding-left: 0; /* Remove left padding */
+  padding-right: 0; /* Remove right padding */
+}
+
+/* Offcanvas Styles */
+.offcanvas {
+  background-color: #007bff; /* Background color */
+  z-index: 1050; /* Ensure offcanvas is above other content */
+}
+
+.offcanvas-header {
+  background-color: #007bff; /* Header background color */
+}
+
+.nav-link {
+  color: #ffffff; /* Link color */
+}
+
+i {
+  margin-right: 5px; /* Spacing between icon and text */
+}
+
+/* Responsive Design Adjustments */
+@media (max-width: 992px) {
+  .offcanvas-body {
+    padding: 2rem; /* Padding inside offcanvas */
+  }
+
+  .navbar-nav {
+    font-size: 1.5rem; /* Font size of menu items */
+  }
+
+  .nav-link {
+    padding: 1.25rem; /* Padding around menu items */
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-nav {
+    font-size: 1rem; /* Font size for smaller screens */
+  }
+
+  .nav-link {
+    padding: 1.5rem; /* Padding around menu items for smaller screens */
+  }
+}

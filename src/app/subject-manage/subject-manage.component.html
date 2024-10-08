@@ -1,0 +1,71 @@
+<div class="container py-5">
+  <!-- Header Section -->
+  <div class="row mb-4 align-items-center">
+    <div class="col-12 col-md-6 mb-3 mb-md-0">
+      <h1 class="mb-4">จัดการรายวิชา</h1>
+    </div>
+  </div>
+
+  <!-- Search, Reset, and Add Subject Button Section -->
+  <div class="row mb-4 align-items-center">
+    <div class="col-12 col-md-6 mb-3 mb-md-0">
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="ค้นหาชื่อหรือรหัสวิชา"
+          [(ngModel)]="searchQuery"
+          (input)="filterSubjects()"
+        />
+        <button class="btn btn-outline-danger" type="button" (click)="resetSearch()">
+          <i class="fas fa-sync-alt"></i> รีเซ็ต
+        </button>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 text-end">
+      <a [routerLink]="['/subject-add']" class="btn btn-success ms-md-3">
+        <i class="far fa-plus-square me-2"></i> เพิ่มรายวิชา
+      </a>
+    </div>
+  </div>
+
+  <!-- List Group Section -->
+  <div class="list-group mb-4">
+    <!-- Show this message when there are no subjects in filteredSubjects -->
+    <div *ngIf="filteredSubjects.length === 0" class="mt-4 alert alert-danger">
+      กรุณาเพิ่มรายวิชา
+    </div>
+
+    <!-- List of subjects -->
+    <div
+      *ngFor="let subject of filteredSubjects"
+      class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start mb-3"
+    >
+      <div class="mb-2 mb-md-0 flex-grow-1">
+        <h5 class="mb-1">{{ subject.subject_name }} ({{ subject.subject_engname }})</h5>
+        <p class="mb-1">
+          <strong>อาจารย์ผู้สอน:</strong> {{ subject.title }} {{ subject.fname }} {{ subject.lname }}<br />
+          <strong>รหัสวิชา:</strong> {{'0'+ subject.id_subject }}<br />
+          <strong>เวลาเรียน:</strong> {{ subject.time_start }} - {{ subject.time_end }}<br />
+          <strong>หมู่เรียน:</strong> {{ subject.section }}<br />
+          <strong>ภาคเรียน:</strong> {{ subject.semester }}<br />
+          <strong>ปีการศึกษา:</strong> {{ subject.year }}<br>
+        </p>
+      </div>
+
+      <div class="ms-auto d-flex flex-wrap align-items-center ">
+        <div class="btn-group" role="group">
+          <a [routerLink]="['/subject-detail', subject.subject_id]" class="btn btn-info btn-sm mb-2 mb-md-0">
+            <i class="fas fa-info-circle me-2"></i> ดูรายละเอียด
+          </a>
+          <button class="btn btn-warning btn-sm mb-2 mb-md-0" (click)="updateSubject(subject)">
+            <i class="far fa-edit me-2"></i> แก้ไข
+          </button>
+          <button class="btn btn-danger btn-sm mb-2 mb-md-0" (click)="deleteSubject(subject.subject_id)">
+            <i class="fas fa-trash-alt me-2"></i> ลบ
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

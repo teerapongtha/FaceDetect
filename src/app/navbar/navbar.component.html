@@ -1,0 +1,76 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <i class="far fa-eye" style="margin-left: 10px;"></i> ระบบสแกนใบหน้าเข้าเรียน
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas" aria-controls="navbarOffcanvas" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel">
+      <div class="offcanvas-header bg-primary text-white">
+        <h5 class="offcanvas-title" id="navbarOffcanvasLabel">ระบบสแกนใบหน้าเข้าเรียน</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link text-white" routerLink="/" (click)="closeMenu()">
+              <i class="fas fa-home"></i> หน้าหลัก
+            </a>
+          </li>
+          <li class="nav-item" *ngIf="!userData">
+            <a class="nav-link text-white" routerLink="/login" (click)="closeMenu()">
+              <i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ
+            </a>
+          </li>
+          <li *ngIf="userData && userData.role === 'teacher'">
+            <a class="nav-link text-white" routerLink="/subject-manage" (click)="closeMenu()">
+              <i class="fas fa-book"></i> รายวิชา
+            </a>
+          </li>
+          <li *ngIf="userData && userData.role === 'teacher'">
+            <a class="nav-link text-white" routerLink="/student-manage" (click)="closeMenu()">
+              <i class="fas fa-user-edit"></i> ข้อมูลนิสิต
+            </a>
+          </li>
+          <li *ngIf="userData && userData.role === 'student'">
+            <a class="nav-link text-white" routerLink="/recognition-manage" (click)="closeMenu()">
+              <i class="fas fa-camera-retro"></i> การรู้จำใบหน้า
+            </a>
+          </li>
+          <li *ngIf="userData && userData.role === 'teacher'">
+            <a class="nav-link text-white" routerLink="/checklist-manage" (click)="closeMenu()">
+              <i class="far fa-calendar-check"></i> จัดการรายการเช็คชื่อ
+            </a>
+          </li>
+          <li *ngIf="userData && userData.role === 'student'">
+            <a class="nav-link text-white" routerLink="/checklist-student" (click)="closeMenu()">
+              <i class="fas fa-check-square"></i> รายการเช็คชื่อ
+            </a>
+          </li>
+          <li *ngIf="userData && userData.role === 'teacher'">
+            <a class="nav-link text-white" routerLink="/report" (click)="closeMenu()">
+              <i class="fas fa-print"></i> รายงานผลการเข้าเรียน
+            </a>
+          </li>
+          <li *ngIf="userData && userData.role === 'student'">
+            <a class="nav-link text-white" routerLink="/report-student" (click)="closeMenu()">
+              <i class="fas fa-print"></i> รายงานผลการเข้าเรียน
+            </a>
+          </li>
+          <li class="nav-item" *ngIf="userData">
+            <a class="nav-link text-white" routerLink="/profile" (click)="closeMenu()">
+              <i class="fas fa-user"></i> ข้อมูลส่วนตัว
+            </a>
+          </li>
+          <li class="nav-item" *ngIf="userData">
+            <a class="nav-link text-white" (click)="logout()" style="cursor: pointer;">
+              <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

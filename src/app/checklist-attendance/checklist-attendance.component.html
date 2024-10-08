@@ -1,0 +1,51 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-lg">
+        <div class="card-header text-center bg-primary text-white">
+          <h2 class="mb-0"><i class="fa fa-user-check"></i> ตรวจสอบการเช็คชื่อเข้าเรียน</h2>
+        </div>
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <h5><i class="fa fa-calendar-alt"></i> วันที่: {{ date }}</h5>
+            <h5><i class="fa fa-clock"></i> เวลา: {{ currentTime | date: 'HH:mm:ss' }}</h5>
+          </div>
+
+          <div class="video-container mb-4 text-center">
+            <div class="position-relative mx-auto" style="max-width: 100%; width: 80%;">
+              <video #videoElement class="img-fluid rounded border" autoplay muted></video>
+              <canvas #canvasElement class="position-absolute top-0 start-0"></canvas>
+            </div>
+          </div>
+
+          <div class="text-center mt-4">
+            <button class="btn btn-success btn-lg px-5" (click)="verifyFace()">
+              <i class="fa fa-check-square-o"></i> เช็คชื่อ
+            </button>
+          </div>
+
+          <div *ngIf="verificationResult" class="verification-result mt-4">
+            <h3 class="text-center"><i class="fa fa-info-circle"></i> ผลการตรวจสอบ</h3>
+            <ul class="list-group">
+              <li class="list-group-item">
+                <strong>ชื่อ:</strong> {{ verificationResult.fname || 'ไม่พบชื่อ' }}
+              </li>
+              <li class="list-group-item">
+                <strong>นามสกุล:</strong> {{ verificationResult.lname || 'ไม่พบนามสกุล' }}
+              </li>
+              <li class="list-group-item">
+                <strong>ระยะทาง:</strong> {{ verificationResult.distance || 'N/A' }}
+              </li>
+              <li class="list-group-item">
+                <strong>ผลลัพธ์:</strong> {{ verificationResult.match ? 'ตรง' : 'ไม่ตรง' }}
+              </li>
+              <li class="list-group-item">
+                <strong>เวลา:</strong> {{ verificationResult.time || 'ไม่ทราบเวลา' }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+<div class="container py-5">
+  <h1 class="display-4 text-center mb-4">รายการเช็คชื่อ</h1>
+
+  <!-- Dropdown for selecting subject -->
+  <div class="mb-4">
+    <label for="subject-dropdown" class="form-label">เลือกรายวิชา:</label>
+    <select id="subject-dropdown" name="subject_id" class="form-select" [(ngModel)]="selectedSubjectId" (change)="onSubjectChange($event)">
+      <option value="" disabled selected hidden>-- กรุณาเลือกรายวิชา --</option>
+      <option *ngFor="let subject of subjects" [value]="subject.subject_id">
+        {{ subject.subject_name }} ({{ subject.subject_engname }})
+      </option>
+    </select>
+  </div>
+
+  <!-- Display message if no subject is selected -->
+  <div class="alert alert-danger" *ngIf="!selectedSubjectId">
+    กรุณาเลือกรายวิชาเพื่อแสดงรายการเช็คชื่อ
+  </div>
+
+  <!-- Search bar for title and date -->
+  <div *ngIf="selectedSubjectId" class="row g-3 mb-3">
+    <div class="col-md-5">
+      <label for="search-title" class="form-label">ค้นหาหัวข้อ:</label>
+      <input id="search-title" type="text" class="form-control" placeholder="ค้นหาหัวข้อ" [(ngModel)]="searchTitle" (input)="searchChecklist()">
+    </div>
+    <div class="col-md-5">
+      <label for="search-date" class="form-label">ค้นหาตามวันที่:</label>
+      <input id="search-date" type="date" class="form-control" [(ngModel)]="searchDate" (change)="searchChecklist()">
+    </div>
+    <div class="col-md-2 d-flex align-items-end">
+      <button class="btn btn-danger w-100" (click)="resetSearch()">
+        <i class="fas fa-undo-alt me-2"></i> รีเซ็ต
+      </button>
+    </div>
+  </div>
+
+  <!-- Display checklist items -->
+  <div *ngIf="selectedSubjectId">
+    <ul *ngIf="filteredChecklists.length > 0" class="list-group mb-4">
+      <li *ngFor="let checklist of filteredChecklists" class="list-group-item">
+        <div class="d-flex flex-column">
+          <div>
+            <h5 class="mb-2">{{ checklist.title }}</h5>
+            <p><strong>วิชา:</strong> {{ getSubjectName(checklist.subject_id) }}</p>
+            <p><strong>รายละเอียด:</strong> {{ checklist.detail }}</p>
+            <p><strong>เวลาเริ่มต้นเช็คชื่อ:</strong> {{ checklist.time_start }}</p>
+            <p><strong>เวลาสิ้นสุดเช็คชื่อ:</strong> {{ checklist.time_end }}</p>
+            <p><strong>วันที่เช็คชื่อ:</strong> {{ formatDateThai(checklist.date) }}</p><br>
+            <p><strong>วันที่ปัจจุบัน:</strong> {{ getCurrentDateThai() }} เวลา: {{ currentTime | date: 'HH:mm:ss' }}</p>
+          </div>
+          <div class="mt-auto text-end">
+            <p *ngIf="checklist.status === 'มาเรียน'" class="text-success"><strong>สถานะ: มาเรียน</strong></p>
+            <p *ngIf="checklist.status === 'มาสาย'" class="text-warning"><strong>สถานะ: มาสาย</strong></p>
+            <p *ngIf="checklist.status === 'ขาดเรียน'" class="text-danger"><strong>สถานะ: ขาดเรียน</strong></p>
+            <ng-container *ngIf="checklist.status !== 'มาเรียน' && checklist.status !== 'มาสาย' && checklist.status !== 'ขาดเรียน'">
+              <a (click)="checkAttendance(checklist, user_id)" class="btn btn-primary">
+                <i class="fas fa-edit"></i> ทำการเช็คชื่อ
+              </a>                              
+            </ng-container>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <!-- Display message if no checklist items are available -->
+    <div class="alert alert-warning" *ngIf="filteredChecklists.length === 0">
+      ไม่มีข้อมูลเช็คชื่อสำหรับวิชานี้
+    </div>
+  </div>
+</div>

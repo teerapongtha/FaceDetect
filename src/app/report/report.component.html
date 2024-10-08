@@ -1,0 +1,67 @@
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+        <h3 class="mb-2 mb-md-0 text-primary">รายงานผลการเข้าเรียนรวม</h3>
+        <div class="d-flex flex-wrap mt-2 mt-md-0">
+            <a routerLink="/report-personal" class="btn btn-outline-primary d-flex align-items-center mb-2 mb-md-0 me-2">
+                <i class="fas fa-user me-2"></i> รายบุคคล
+            </a>
+            <a (click)="exportReport()" class="btn btn-outline-success d-flex align-items-center mb-2 mb-md-0">
+                <i class="fas fa-file-export me-2"></i> Export to Excel
+            </a>
+        </div>
+    </div>
+
+    <!-- Subject Dropdown Section -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <label for="subject-dropdown" class="form-label fs-5">เลือกรายวิชา:</label>
+            <select id="subject-dropdown" class="form-select" (change)="onSubjectChange($event)">
+                <option value="" disabled selected hidden>--กรุณาเลือกรายวิชา--</option>
+                <option *ngFor="let subject of subjects" [value]="subject.subject_id">
+                    {{ subject.subject_name }} ({{ subject.subject_engname }})
+                </option>
+            </select>
+        </div>
+        <div class="card-body d-flex align-items-end">
+            <div class="me-2">
+                <label for="month-dropdown" class="form-label fs-5">เดือน:</label>
+                <select id="month-dropdown" class="form-select w-auto" [(ngModel)]="selectedMonth" (change)="onMonthChange()">
+                    <option value="" disabled selected hidden>--เลือกเดือน--</option>
+                    <option *ngFor="let month of months" [value]="month.value">
+                        {{ month.label }}
+                    </option>
+                </select>
+            </div>
+            <button class="btn btn-outline-danger d-flex align-items-center" (click)="resetFilters()">
+                <i class="fas fa-sync-alt me-2"></i> รีเซ็ต
+            </button>
+        </div>
+    </div>
+
+    <!-- Alert Section -->
+    <div *ngIf="!selectedSubjectId && !selectedMonth" class="mt-4 alert alert-warning text-center">
+    กรุณาเลือกวิชาและเดือนเพื่อแสดงข้อมูลรายงาน
+    </div>
+    
+    <div *ngIf="selectedSubjectId && !selectedMonth" class="mt-4 alert alert-warning text-center">
+    กรุณาเลือกเดือนเพื่อแสดงข้อมูลรายงาน
+    </div>
+    
+    <div *ngIf="filteredReportData.length === 0 && selectedSubjectId && selectedMonth" class="mt-4 alert alert-danger text-center">
+    ไม่มีข้อมูลสำหรับเดือนนี้
+    </div>
+
+    <!-- Chart Section -->
+    <div *ngIf="selectedSubjectId && selectedMonth" class="card shadow-sm mt-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title mb-0">
+                กราฟแสดงจำนวนการเข้าเรียนของนักเรียน
+                <span *ngIf="selectedMonth"> - {{ getMonthLabel(selectedMonth) }}</span>
+            </h5>
+        </div>
+        <div class="card-body">
+            <canvas #chartCanvas></canvas>
+        </div>
+    </div>
+</div>

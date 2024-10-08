@@ -1,0 +1,51 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+          <h2 class="mb-0">นำเข้าข้อมูลนิสิต</h2>
+        </div>
+        <div class="card-body">
+          <form>
+
+            <!-- Large Image with Labels -->
+            <div class="text-center mb-4">
+              <h5 class="mt-4">ตัวอย่างข้อมูลคอลัมน์ที่นำเข้า</h5> <!-- Add margin-top for spacing -->
+              <p>รหัสวิชา (A1) | รหัสนิสิต (B) | คำนำหน้า (C) | ชื่อ (D) | นามสกุล (E) | อีเมล (I)</p>
+              <a href="../assets/img_import.png" target="_blank"> <!-- Link to open image in a new tab -->
+                <img src="../assets/img_import.png" alt="ข้อมูลนิสิต" class="img-fluid" style="max-height: 400px; max-width: 100%; transition: transform 0.3s;"> <!-- Add transition for smooth effect -->
+              </a>
+            </div>
+
+            <!-- File Input -->
+            <div class="mb-4">
+              <label for="fileInput" class="form-label fs-5">เลือกไฟล์เพื่อนำเข้าข้อมูล</label>
+              <input type="file" class="form-control" id="fileInput" name="file" required accept=".xlsx, .xls" (change)="onFileSelected($event)">
+              <small class="form-text text-danger mt-2">*โปรดเลือกไฟล์ Excel (.xlsx, .xls) เท่านั้น</small>
+            </div>
+
+            <!-- Upload Button -->
+            <div class="d-flex justify-content-between align-items-center">
+              <button type="button" class="btn btn-primary" (click)="uploadFile()" [disabled]="isLoading">
+                <i class="fas fa-file-import me-2"></i> อัปโหลด
+              </button>
+              <a class="btn btn-secondary" [routerLink]="'/student-manage'">
+                <i class="far fa-arrow-alt-circle-left me-2"></i> ย้อนกลับ
+              </a>
+            </div>
+            
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="text-center mt-4">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">กำลังอัปโหลดข้อมูล...</span>
+    </div>
+    <p class="mt-2">กำลังอัปโหลดข้อมูล...</p>
+  </div>
+</div>
+

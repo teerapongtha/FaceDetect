@@ -1,0 +1,66 @@
+<div class="container py-4">
+  <!-- Page Header -->
+  <div class="row mb-4 justify-content-center">
+    <!-- Center the card within the row -->
+    <div class="col-12 col-md-10 col-lg-8">
+      <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+          <h1 class="display-4">แก้ไขข้อมูลนิสิต</h1>
+          <h3 class="lead">กรุณาแก้ไขข้อมูลนิสิต</h3>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="updateStudent()" #editForm="ngForm">
+            <!-- Student ID Field -->
+            <div class="mb-3">
+              <label for="student-id" class="form-label">รหัสนิสิต :</label>
+              <input type="text" class="form-control" id="student-id" name="studentId" placeholder="ระบุรหัสนิสิต" [(ngModel)]="StudentUpdate.std_id" required disabled>
+            </div>
+
+            <!-- Title Dropdown -->
+            <div class="mb-3">
+              <label for="title-dropdown" class="form-label">คำนำหน้า :</label>
+              <select id="title-dropdown" name="title" class="form-select" [(ngModel)]="StudentUpdate.title" required>
+                <option value="นาย">นาย</option>
+                <option value="นางสาว">นางสาว</option>
+              </select>
+            </div>
+
+            <!-- First Name Field -->
+            <div class="mb-3">
+              <label for="fullname" class="form-label">ชื่อ :</label>
+              <input type="text" class="form-control" id="fullname" name="firstname" placeholder="ระบุชื่อที่ต้องการแก้ไข..." [(ngModel)]="StudentUpdate.fname" required>
+            </div>
+
+            <!-- Last Name Field -->
+            <div class="mb-3">
+              <label for="lastname" class="form-label">สกุล :</label>
+              <input type="text" class="form-control" id="lastname" name="lastname" placeholder="ระบุสกุลที่ต้องการแก้ไข..." [(ngModel)]="StudentUpdate.lname" required>
+            </div>
+
+            <!-- Email Field -->
+            <div class="mb-3">
+              <label for="email" class="form-label">อีเมล :</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="ระบุอีเมลที่ต้องการแก้ไข..." [(ngModel)]="StudentUpdate.email" required>
+            </div>
+
+            <!-- Password Field -->
+            <div class="mb-3">
+              <label for="password" class="form-label">รหัสผ่าน :</label>
+              <input type="text" class="form-control" id="password" name="password" placeholder="ระบุรหัสผ่านที่ต้องการแก้ไข..." [(ngModel)]="StudentUpdate.password" required>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-between mt-4">
+              <button type="submit" class="btn btn-primary">
+                <i class="far fa-save me-2"></i> บันทึกข้อมูล
+              </button>
+              <a routerLink="/student-manage" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i> ย้อนกลับ
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

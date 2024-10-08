@@ -1,0 +1,82 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+      <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+          <h1 class="display-4">แก้ไขรายวิชา</h1>
+          <h3 class="lead">กรุณากรอกข้อมูลที่ต้องการแก้ไข</h3>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="updateSubject()" #editForm="ngForm">
+            <!-- Subject Code Field -->
+            <div class="mb-3">
+              <label for="id_subject" class="form-label">รหัสวิชา :</label>
+              <input type="text" class="form-control" id="id_subject" name="id_subject" placeholder="ระบุรหัสวิชา"
+                [(ngModel)]="SubjectUpdate.id_subject" required>
+            </div>
+
+            <!-- Subject Name Field -->
+            <div class="mb-3">
+              <label for="subject_name" class="form-label">ชื่อวิชา :</label>
+              <input type="text" class="form-control" id="subject_name" name="subject_name"
+                placeholder="ระบุชื่อวิชา" [(ngModel)]="SubjectUpdate.subject_name" required>
+            </div>
+
+            <!-- Subject English Name Field -->
+            <div class="mb-3">
+              <label for="subject_engname" class="form-label">ชื่อภาษาอังกฤษของวิชา :</label>
+              <input type="text" class="form-control" id="subject_engname" name="subject_engname"
+                placeholder="ระบุชื่อภาษาอังกฤษของวิชา" [(ngModel)]="SubjectUpdate.subject_engname" required>
+            </div>
+
+            <!-- Time Fields in Same Row -->
+            <div class="row mb-3">
+              <!-- Time Start Field -->
+              <div class="col-md-6">
+                <label for="time_start" class="form-label">เวลาเรียนเริ่มต้น :</label>
+                <input type="time" class="form-control" id="time_start" name="time_start" [(ngModel)]="SubjectUpdate.time_start" required>
+              </div>
+
+              <!-- Time End Field -->
+              <div class="col-md-6">
+                <label for="time_end" class="form-label">เวลาเรียนสิ้นสุด :</label>
+                <input type="time" class="form-control" id="time_end" name="time_end" [(ngModel)]="SubjectUpdate.time_end" required>
+              </div>
+            </div>
+
+            <!-- Section, Semester, Year Fields in Same Row -->
+            <div class="row mb-3">
+              <!-- Section Field -->
+              <div class="col-md-4">
+                <label for="section" class="form-label">หมู่เรียน :</label>
+                <input type="text" class="form-control" id="section" name="section" placeholder="ระบุหมู่เรียน" [(ngModel)]="SubjectUpdate.section">
+              </div>
+
+              <!-- Semester Field -->
+              <div class="col-md-4">
+                <label for="semester" class="form-label">ภาคเรียน :</label>
+                <input type="text" class="form-control" id="semester" name="semester" placeholder="ระบุภาคเรียน" [(ngModel)]="SubjectUpdate.semester">
+              </div>
+
+              <!-- Year Field -->
+              <div class="col-md-4">
+                <label for="year" class="form-label">ปีการศึกษา :</label>
+                <input type="text" class="form-control" id="year" name="year" placeholder="ระบุปีการศึกษา" [(ngModel)]="SubjectUpdate.year">
+              </div>
+            </div>
+
+            <!-- Submit and Back Buttons -->
+            <div class="d-flex justify-content-between mt-4">
+              <button type="submit" class="btn btn-warning">
+                <i class="far fa-edit me-2"></i> แก้ไขข้อมูล
+              </button>
+              <a routerLink="/subject-manage" class="btn btn-secondary">
+                <i class="fas fa-arrow-alt-circle-left me-2"></i> ย้อนกลับ
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

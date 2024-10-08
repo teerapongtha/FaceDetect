@@ -1,0 +1,65 @@
+<div class="container py-4">
+  <!-- Header Section -->
+  <div class="row mb-3">
+      <div class="col-12 text-center">
+          <h1 class="mb-0">หัวข้อ: {{ checklist }}</h1>
+      </div>
+  </div>
+
+  <!-- Search Section -->
+  <div class="row mb-4">
+      <div class="col-12 col-md-6 mx-auto">
+          <div class="input-group">
+              <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="ค้นหาชื่อหรือรหัสนิสิต" (input)="filterDetails()" />
+              <button class="btn btn-outline-danger" (click)="resetSearch()">
+                  <i class="fas fa-undo-alt"></i> รีเซ็ต
+              </button>
+          </div>
+      </div>
+  </div>
+
+  <!-- Attendance Table -->
+  <div class="table-responsive">
+      <table class="table table-hover table-bordered">
+          <thead class="table-light">
+              <tr>
+                  <th>รหัสนิสิต</th>
+                  <th>ชื่อ-นามสกุล</th>
+                  <th>สถานะ</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let detail of paginatedDetails">
+                  <td>{{ detail.std_id }}</td>
+                  <td>{{ detail.std_name }}</td>
+                  <td>{{ detail.status }}</td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+
+  <!-- Pagination Controls -->
+  <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+          <li class="page-item" [ngClass]="{'disabled': currentPage === 1}">
+              <a class="page-link" (click)="prevPage()" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+              </a>
+          </li>
+          <li class="page-item" *ngFor="let page of pages" [ngClass]="{'active': page === currentPage}">
+              <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+          </li>
+          <li class="page-item" [ngClass]="{'disabled': currentPage === totalPages}">
+              <a class="page-link" (click)="nextPage()" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+              </a>
+          </li>
+      </ul>
+  </nav>
+
+  <div class="text-center mt-4">
+      <button class="btn btn-secondary" (click)="goBack()">
+          <i class="fa fa-arrow-left"></i> ย้อนกลับ
+      </button>
+  </div>
+</div>

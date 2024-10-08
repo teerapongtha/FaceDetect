@@ -1,0 +1,39 @@
+<div class="container py-4">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white text-center">
+            <h2 class="mb-0">แก้ไขรูปภาพโปรไฟล์</h2>
+          </div>
+          <div class="card-body">
+            <!-- Form -->
+            <form enctype="multipart/form-data">
+              <!-- File Input -->
+              <div class="mb-3">
+                <label for="fileInput" class="form-label fs-4">เลือกไฟล์รูปภาพที่ต้องการแก้ไข</label>
+                <input type="file" class="form-control" id="fileInput" (change)="onFileSelected($event)" required accept=".jpg, .jpeg, .png">
+                <div class="form-text text-danger fs-5 mt-2">*โปรดเลือกไฟล์รูปภาพ (.jpg, .jpeg, .png) เท่านั้น</div>
+              </div>
+              <!-- Buttons -->
+              <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-primary" (click)="uploadFile()" [disabled]="isLoading">
+                  <i class="fas fa-file-import me-2"></i> อัปโหลด
+                </button>
+                <a [routerLink]="'/profile'" class="btn btn-secondary">
+                  <i class="fas fa-arrow-alt-circle-left me-2"></i> ย้อนกลับ
+                </a>
+              </div>
+            </form>
+            <!-- Loading Spinner -->
+            <div *ngIf="isLoading" class="text-center mt-4">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2">กำลังอัปโหลดข้อมูล...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

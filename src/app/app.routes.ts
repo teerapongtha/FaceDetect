@@ -1,0 +1,66 @@
+import { RouterModule, Routes } from '@angular/router';
+import { HomePageComponent } from './home-page/home-page.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { LoginComponent } from './login/login.component';
+import { ChecklistManageComponent } from './checklist-manage/checklist-manage.component';
+import { ChecklistEditComponent } from './checklist-edit/checklist-edit.component';
+import { ChecklistCreateComponent } from './checklist-create/checklist-create.component';
+import { SubjectManageComponent } from './subject-manage/subject-manage.component';
+import { ReportComponent } from './report/report.component';
+import { StudentManageComponent } from './student-manage/student-manage.component';
+import { StudentImportComponent } from './student-import/student-import.component';
+import { StudentAddComponent } from './student-add/student-add.component';
+import { ReportPersonalComponent } from './report-personal/report-personal.component';
+import { ReportWeekComponent } from './report-week/report-week.component';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ProfileEditComponent } from './profile-edit/profile-edit.component';
+import { SubjectAddComponent } from './subject-add/subject-add.component';
+import { SubjectEditComponent } from './subject-edit/subject-edit.component';
+import { NgModule } from '@angular/core';
+import { StudentEditComponent } from './student-edit/student-edit.component';
+import { SubjectDetailComponent } from './subject-detail/subject-detail.component';
+import { ProfileEditIMGComponent } from './profile-edit-img/profile-edit-img.component';
+import { FaceRecognitionComponent } from './face-recognition/face-recognition.component';
+import { RecognitionManageComponent } from './recognition-manage/recognition-manage.component';
+import { ChecklistStudentComponent } from './checklist-student/checklist-student.component';
+import { FaceDetectComponent } from './face-detect/face-detect.component';
+import { ChecklistAttendanceComponent } from './checklist-attendance/checklist-attendance.component';
+import { AttendanceRecordComponent } from './attendance-record/attendance-record.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ReportPersonalDetailComponent } from './report-personal-detail/report-personal-detail.component';
+import { ReportStudentComponent } from './report-student/report-student.component';
+
+export const routes: Routes = [
+    { 'path': '', component: HomePageComponent },
+    { 'path': 'home', component: HomePageComponent },
+    { 'path': 'navbar', component: NavbarComponent },
+    { 'path': 'login', component: LoginComponent },
+    { 'path': 'forget-password', component: ForgetPasswordComponent },
+    { 'path': 'reset-password', component: ResetPasswordComponent },
+    { 'path': 'attendance-record/:id', component: AttendanceRecordComponent},
+    { 'path': 'checklist-attendance/:id', component: ChecklistAttendanceComponent },
+    { 'path': 'checklist-manage', component: ChecklistManageComponent },
+    { 'path': 'checklist-create', component: ChecklistCreateComponent },
+    { 'path': 'checklist-update/:id', component: ChecklistEditComponent },
+    { 'path': 'checklist-student', component: ChecklistStudentComponent },
+    { 'path': 'profile', component: ProfileComponent },
+    { 'path': 'profile-update/:id', component: ProfileEditComponent },
+    { 'path': 'profile-editIMG/:id', component: ProfileEditIMGComponent },
+    { 'path': 'recognition', component: FaceRecognitionComponent },
+    { 'path': 'face-detect/:std_id', component: FaceDetectComponent },
+    { 'path': 'recognition-manage', component: RecognitionManageComponent },
+    { 'path': 'report', component: ReportComponent },
+    { 'path': 'report-personal', component: ReportPersonalComponent },
+    { 'path': 'report-personal-detail/:studentId/:subjectId', component: ReportPersonalDetailComponent },
+    { 'path': 'report-week', component: ReportWeekComponent },
+    { 'path': 'report-student', component: ReportStudentComponent },
+    { 'path': 'subject-manage', component: SubjectManageComponent },
+    { 'path': 'subject-detail/:subjectId', component: SubjectDetailComponent },
+    { 'path': 'subject-add', component: SubjectAddComponent },
+    { 'path': 'subject-update/:id', component: SubjectEditComponent },
+    { 'path': 'student-manage', component: StudentManageComponent },
+    { 'path': 'student-import', component: StudentImportComponent },
+    { 'path': 'student-add', component: StudentAddComponent },
+    { 'path': 'student-update/:id', component: StudentEditComponent }
+];
