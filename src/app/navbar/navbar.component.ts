@@ -5,6 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { DataService } from '../service/data.service';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { Offcanvas } from 'bootstrap';
 
 @Component({
   selector: 'app-navbar',
@@ -35,20 +36,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   closeMenu() {
     const offcanvasElement = document.getElementById('navbarOffcanvas');
     if (offcanvasElement) {
-      // Get or create the offcanvas instance
-      const offcanvas = (window as any).bootstrap.Offcanvas.getOrCreateInstance(offcanvasElement);
-      
-      // Manually hide the offcanvas
+      const offcanvas = Offcanvas.getOrCreateInstance(offcanvasElement);
       offcanvas.hide();
-  
-      // Immediately remove any existing backdrop
-      const backdrop = document.querySelector('.offcanvas-backdrop');
-      if (backdrop) {
-        backdrop.remove();
-      }
     }
   }
-  
 
   logout() {
     localStorage.removeItem('acId');
