@@ -143,143 +143,152 @@ export class ChecklistAttendanceComponent implements AfterViewInit, OnDestroy {
 
   async verifyFace() {
     if (!this.std_id) {
-      Swal.fire({
-        title: 'ข้อผิดพลาด',
-        text: 'ไม่พบรหัสนักเรียน',
-        icon: 'error',
-        confirmButtonText: 'ตกลง'
-      });
-      return;
-    }
-  
-    if (this.checklistId === undefined || this.checklistId === null) {
-      Swal.fire({
-        title: 'ข้อผิดพลาด',
-        text: 'รหัสตรวจสอบไม่ถูกต้อง',
-        icon: 'error',
-        confirmButtonText: 'ตกลง'
-      });
-      return;
-    }
-  
-    // ตรวจสอบว่ามีข้อมูล imgStdData หรือไม่
-    if (!this.imgStdData || this.imgStdData.length === 0) {
-      Swal.fire({
-        title: 'ข้อผิดพลาด',
-        text: 'ไม่พบข้อมูลรูปภาพนักเรียน กรุณาทำการบันทึกรูปภาพก่อน',
-        icon: 'warning',
-        confirmButtonText: 'ไปยังหน้าบันทึกรูปภาพ'
-      }).then(() => {
-        this.router.navigate(['/recognition-manage'], { queryParams: { std_id: this.std_id } });
-      });
-      return;
-    }
-  
-    // // ตรวจสอบว่า imgStdData มี extract_feature หรือไม่
-    // const studentData = this.imgStdData.find(data => data.std_id === this.std_id);
-    // if (!studentData || !studentData.extract_feature) {
-    //   Swal.fire({
-    //     title: 'ข้อผิดพลาด',
-    //     text: 'ไม่พบข้อมูลใบหน้าที่บันทึก กรุณาทำการบันทึกใบหน้าก่อน',
-    //     icon: 'warning',
-    //     confirmButtonText: 'ไปยังหน้าบันทึกรูปภาพ'
-    //   }).then(() => {
-    //     this.router.navigate(['/recognition-manage'], { queryParams: { std_id: this.std_id } });
-    //   });
-    //   return;
-    // }
-  
-    const video = this.videoElement.nativeElement;
-    const canvas = this.canvasElement.nativeElement;
-  
-    try {
-      const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-        .withFaceLandmarks()
-        .withFaceDescriptors();
-  
-      const displaySize = { width: video.videoWidth, height: video.videoHeight };
-      faceapi.matchDimensions(canvas, displaySize);
-      const resizedDetections = faceapi.resizeResults(detections, displaySize);
-  
-      const faceDescriptor = resizedDetections.length > 0 ? resizedDetections[0].descriptor : null;
-  
-      if (faceDescriptor) {
-        const matchingUser = this.findMatchingUser(faceDescriptor);
-        if (matchingUser) {
-          const userData = matchingUser.userData;
-          const distance = matchingUser.distance;
-          const fname = userData?.fname ?? 'ไม่ทราบ';
-          const lname = userData?.lname ?? 'ไม่ทราบ';
-  
-          const currentTime = new Date();
-          const timeDisplay = currentTime.toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' });
-  
-          // Fetch checklist end time
-          const checklistTimes = await this.http.get<any>(`${this.dataService.apiUrl}/checklist-times/${this.checklistId}`).toPromise();
-          const checklistEndTime = new Date(checklistTimes?.checklistEndTime);
-  
-          let status: string;
-          if (currentTime > checklistEndTime) {
-            status = 'มาสาย'; // Late
-          } else {
-            status = 'มาเรียน'; // Present
-          }
-  
-          this.verificationResult = {
-            fname,
-            lname,
-            distance: distance.toFixed(2),
-            match: distance <= 0.6,
-            time: timeDisplay,
-            status
-          };
-  
-          const imageBlob = await this.captureImageFromVideo(video);
-          const formData = new FormData();
-          formData.append('img_attendance', imageBlob, 'image.jpg');
-          formData.append('std_id', userData.std_id.toString());
-          formData.append('status', status);
-          formData.append('date_attendance', currentTime.toISOString().split('T')[0]);
-          formData.append('time_attendance', currentTime.toTimeString().split(' ')[0]);
-  
-          const saveResponse: any = await this.http.post(`${this.dataService.apiUrl}/checklist-attendance/${this.checklistId}`, formData).toPromise();
-          this.attendance_id = saveResponse?.attendance_id || null;
-  
-          Swal.fire({
-            title: 'การตรวจสอบเสร็จสมบูรณ์',
-            html: `
-              <strong>ชื่อ:</strong> ${this.verificationResult.fname} ${this.verificationResult.lname}<br>
-              <strong>เวลา:</strong> ${this.verificationResult.time}<br>
-              <strong>ผลลัพธ์:</strong> ${this.verificationResult.match ? 'ใบหน้าตรง' : 'ใบหน้าไม่ตรง'}
-            `,
-            icon: 'success',
-            confirmButtonText: 'ตกลง'
-          }).then(() => {
-            this.router.navigate(['/checklist-student']).then(() => {
-              setTimeout(() => {
-                window.location.reload();
-              }, 500);
-            });
-          });
-        } else {
-          Swal.fire({
-            title: 'ไม่พบผู้ใช้',
-            text: 'ไม่พบผู้ใช้ที่ตรงกับใบหน้าที่ตรวจสอบ',
+        Swal.fire({
+            title: 'ข้อผิดพลาด',
+            text: 'ไม่พบรหัสนักเรียน',
             icon: 'error',
             confirmButtonText: 'ตกลง'
-          });
-        }
-      }
-    } catch (error) {
-      console.error('ข้อผิดพลาดในการตรวจสอบใบหน้า:', error);
-      Swal.fire({
-        title: 'ข้อผิดพลาด',
-        text: 'เกิดข้อผิดพลาดในการตรวจสอบใบหน้า',
-        icon: 'error',
-        confirmButtonText: 'ตกลง'
-      });
+        });
+        return;
     }
-  }
+
+    if (this.checklistId === undefined || this.checklistId === null) {
+        Swal.fire({
+            title: 'ข้อผิดพลาด',
+            text: 'รหัสตรวจสอบไม่ถูกต้อง',
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+        return;
+    }
+
+    // ตรวจสอบว่ามีข้อมูล imgStdData หรือไม่
+    if (!this.imgStdData || this.imgStdData.length === 0) {
+        Swal.fire({
+            title: 'ข้อผิดพลาด',
+            text: 'ไม่พบข้อมูลรูปภาพนักเรียน กรุณาทำการบันทึกรูปภาพก่อน',
+            icon: 'warning',
+            confirmButtonText: 'ไปยังหน้าบันทึกรูปภาพ'
+        }).then(() => {
+            this.router.navigate(['/recognition-manage'], { queryParams: { std_id: this.std_id } });
+        });
+        return;
+    }
+
+    const video = this.videoElement.nativeElement;
+    const canvas = this.canvasElement.nativeElement;
+
+    try {
+        const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+            .withFaceLandmarks()
+            .withFaceDescriptors();
+
+        const displaySize = { width: video.videoWidth, height: video.videoHeight };
+        faceapi.matchDimensions(canvas, displaySize);
+        const resizedDetections = faceapi.resizeResults(detections, displaySize);
+
+        const faceDescriptor = resizedDetections.length > 0 ? resizedDetections[0].descriptor : null;
+
+        if (faceDescriptor) {
+            const matchingUser = this.findMatchingUser(faceDescriptor);
+            if (matchingUser) {
+                const userData = matchingUser.userData;
+                const distance = matchingUser.distance;
+                const fname = userData?.fname ?? 'ไม่ทราบ';
+                const lname = userData?.lname ?? 'ไม่ทราบ';
+
+                const currentTime = new Date();
+                const timeDisplay = currentTime.toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' });
+
+                // Fetch checklist end time
+                const checklistTimes = await this.http.get<any>(`${this.dataService.apiUrl}/checklist-times/${this.checklistId}`).toPromise();
+                const checklistEndTime = new Date(checklistTimes?.checklistEndTime);
+
+                let status: string;
+                if (currentTime > checklistEndTime) {
+                    status = 'มาสาย'; // Late
+                } else {
+                    status = 'มาเรียน'; // Present
+                }
+
+                this.verificationResult = {
+                    fname,
+                    lname,
+                    distance: distance.toFixed(2), // Show distance to two decimal places
+                    match: distance <= 0.6,
+                    time: timeDisplay,
+                    status
+                };
+
+                const imageBlob = await this.captureImageFromVideo(video);
+                const formData = new FormData();
+                formData.append('img_attendance', imageBlob, 'image.jpg');
+                formData.append('std_id', userData.std_id.toString());
+                formData.append('status', status);
+                formData.append('date_attendance', currentTime.toISOString().split('T')[0]);
+                formData.append('time_attendance', currentTime.toTimeString().split(' ')[0]);
+
+                const saveResponse: any = await this.http.post(`${this.dataService.apiUrl}/checklist-attendance/${this.checklistId}`, formData).toPromise();
+                this.attendance_id = saveResponse?.attendance_id || null;
+
+                Swal.fire({
+                    title: 'การตรวจสอบเสร็จสมบูรณ์',
+                    html: `
+                      <strong>ชื่อ:</strong> ${this.verificationResult.fname} ${this.verificationResult.lname}<br>
+                      <strong>เวลา:</strong> ${this.verificationResult.time}<br>
+                      <strong>ระยะทาง:</strong> ${this.verificationResult.distance} <br>
+                      <strong>ผลลัพธ์:</strong> ${this.verificationResult.match ? 'ใบหน้าตรง' : 'ใบหน้าไม่ตรง'}
+                    `,
+                    icon: 'success',
+                    confirmButtonText: 'ตกลง'
+                }).then(() => {
+                    this.router.navigate(['/checklist-student']).then(() => {
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 500);
+                    });
+                });
+            } else {
+                // ดึงระยะทางทั้งหมดเพื่อคำนวณค่าเฉลี่ย
+                const distances: number[] = [];
+
+                this.imgStdData.forEach((userData) => {
+                    const savedDescriptor = JSON.parse(userData.extract_feature);
+                    const distance = faceapi.euclideanDistance(faceDescriptor, savedDescriptor);
+                    distances.push(distance);
+                });
+
+                const averageDistance = distances.length > 0
+                    ? distances.reduce((acc, val) => acc + val, 0) / distances.length
+                    : null;
+
+                Swal.fire({
+                    title: 'ไม่พบผู้ใช้',
+                    text: `ไม่พบผู้ใช้ที่ตรงกับใบหน้าที่ตรวจสอบ ระยะทางเฉลี่ย (distance): ${averageDistance !== null ? averageDistance.toFixed(2) : 'ไม่สามารถคำนวณได้'}`,
+                    icon: 'error',
+                    confirmButtonText: 'ตกลง'
+                });
+            }
+        } else {
+            Swal.fire({
+                title: 'ไม่พบใบหน้า',
+                text: 'ไม่พบใบหน้าที่ตรวจสอบ',
+                icon: 'warning',
+                confirmButtonText: 'ตกลง'
+            });
+        }
+    } catch (error) {
+        console.error('ข้อผิดพลาดในการตรวจสอบใบหน้า:', error);
+        Swal.fire({
+            title: 'ข้อผิดพลาด',
+            text: 'เกิดข้อผิดพลาดในการตรวจสอบใบหน้า',
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+    }
+}
+
+  
   
   
 
