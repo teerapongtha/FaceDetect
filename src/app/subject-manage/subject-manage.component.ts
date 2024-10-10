@@ -59,7 +59,7 @@ export class SubjectManageComponent implements OnInit {
 
   deleteSubject(subject_id: number) {
     Swal.fire({
-      title: 'คุณแน่ใจหรือว่าต้องการลบรายการนี้?',
+      title: 'คุณแน่ใจหรือว่าต้องการลบรายวิชานี้?',
       text: 'การกระทำนี้ไม่สามารถยกเลิกได้!',
       icon: 'warning',
       showCancelButton: true,

@@ -182,7 +182,8 @@ export class ChecklistStudentComponent implements OnInit {
     const currentDate = new Date();
     const checklistDate = new Date(checklist.date);
     const subjectTimes = this.subjectTimes[this.selectedSubjectId] || {};
-  
+    
+    // ตรวจสอบว่าเช็คชื่อเลยวันแล้ว
     if (currentDate.toDateString() !== checklistDate.toDateString()) {
       if (currentDate < checklistDate) {
         Swal.fire({
@@ -192,12 +193,13 @@ export class ChecklistStudentComponent implements OnInit {
         });
         return;
       } else if (currentDate > checklistDate) {
+        // ถ้าเลยวันเช็คชื่อ ให้บันทึกเป็น "ขาดเรียน" โดยอัตโนมัติ
         Swal.fire({
           icon: 'warning',
           title: 'ไม่สามารถเช็คชื่อได้',
           text: 'วันที่เช็คชื่อได้ผ่านมาแล้ว'
         }).then(() => {
-          this.loadChecklist();
+          this.recordAttendance(checklist.checklist_id, 'ขาดเรียน'); // บันทึกเป็น "ขาดเรียน"
         });
         return;
       }
@@ -207,6 +209,7 @@ export class ChecklistStudentComponent implements OnInit {
     const timeStart = subjectTimes.time_start;
     const timeEnd = subjectTimes.time_end;
   
+    // ตรวจสอบว่าถึงเวลาหรือเลยเวลาเช็คชื่อหรือยัง
     if (currentTimeStr < timeStart) {
       Swal.fire({
         icon: 'warning',
@@ -217,19 +220,21 @@ export class ChecklistStudentComponent implements OnInit {
     }
   
     if (currentTimeStr > timeEnd) {
+      // ถ้าเลยเวลา ให้บันทึกเป็น "ขาดเรียน" โดยอัตโนมัติ
       Swal.fire({
         icon: 'error',
         title: 'หมดเวลาเช็คชื่อ',
         text: 'คุณจะถูกบันทึกเป็นขาดเรียน'
       }).then(() => {
-        this.recordAttendance(checklist.checklist_id, 'ขาดเรียน');
+        this.recordAttendance(checklist.checklist_id, 'ขาดเรียน'); // บันทึกเป็น "ขาดเรียน"
       });
       return;
     }
   
+    // หากอยู่ในช่วงเวลาที่เช็คชื่อได้ ให้ไปที่หน้าสำหรับเช็คชื่อ
     this.route.navigate(['/checklist-attendance', checklist.checklist_id, { std_id }]);
   }
-
+  
   recordAttendance(checklistId: number, status: string) {
     this.http.post(`${this.dataService.apiUrl}/update-attendance`, {
       checklist_id: checklistId,
@@ -245,22 +250,31 @@ export class ChecklistStudentComponent implements OnInit {
       }
     );
   }
-
+  
   updatePastAttendances(): Promise<void> {
+    // ตรวจสอบว่ามีการบันทึกข้อมูลย้อนหลังไปแล้วหรือยัง
+    if (this.pastAttendancesUpdated) {
+      console.log('ข้อมูลเช็คชื่อย้อนหลังถูกบันทึกแล้ว');
+      return Promise.resolve(); // คืนค่า resolve ทันทีโดยไม่ต้องทำการรีเควส
+    }
+  
+    // ถ้ายังไม่เคยบันทึกข้อมูลย้อนหลัง ให้ทำการเรียก API
     return new Promise((resolve, reject) => {
       this.http.post(`${this.dataService.apiUrl}/update-past-attendance`, {
         std_id: this.user_id,
         subject_id: this.selectedSubjectId
       }).subscribe(
         () => {
-          console.log('อัปเดตข้อมูลเช็คชื่อย้อนหลังสำเร็จ'); // Log success message
+          console.log('อัปเดตข้อมูลเช็คชื่อย้อนหลังสำเร็จ');
+          this.pastAttendancesUpdated = true; // ตั้งค่าว่าบันทึกแล้ว
           resolve(); // คืนค่า resolve เมื่อบันทึกเสร็จ
         },
         (error) => {
-          console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูลเช็คชื่อย้อนหลัง:', error); // Log error message
+          console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูลเช็คชื่อย้อนหลัง:', error);
           reject(error); // คืนค่า reject เมื่อเกิดข้อผิดพลาด
         }
       );
     });
   }
+  
 }

@@ -32,8 +32,8 @@ export class StudentEditComponent implements OnInit {
   updateStudent() {
     this.http.put(this.dataService.apiUrl + `/student-edit/${this.StudentUpdate.std_id}`, this.StudentUpdate).subscribe(() => {
       Swal.fire(
-        'แก้ไขรายการสำเร็จ!',
-        'รายการถูกแก้ไขแล้ว',
+        'แก้ไขข้อมูลนิสิตสำเร็จ!',
+        'ข้อมูลถูกแก้ไขแล้ว',
         'success'
       );
       this.router.navigate(['/student-manage']);

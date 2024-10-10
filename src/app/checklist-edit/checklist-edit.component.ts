@@ -83,8 +83,8 @@ export class ChecklistEditComponent implements OnInit {
       this.http.put(`${this.dataService.apiUrl}/checklist-update/${this.ChecklistUpdate.checklist_id}`, this.ChecklistUpdate).subscribe(
         () => {
           Swal.fire(
-            'แก้ไขรายการสำเร็จ!',
-            'รายการถูกแก้ไขแล้ว',
+            'แก้ไขข้อมูลรายการเช็คชื่อสำเร็จ!',
+            'ข้อมูลถูกแก้ไขแล้ว',
             'success'
           ).then(() => {
             this.router.navigate(['/checklist-manage']);

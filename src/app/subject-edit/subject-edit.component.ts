@@ -32,7 +32,7 @@ export class SubjectEditComponent implements OnInit {
   updateSubject() {
     this.http.put(this.dataService.apiUrl + `/subject-update/${this.SubjectUpdate.subject_id}`, this.SubjectUpdate).subscribe(() => {
       Swal.fire(
-        'แก้ไขรายการสำเร็จ!',
+        'แก้ไขข้อมูลรายวิชาสำเร็จ!',
         'รายการถูกแก้ไขแล้ว',
         'success'
       );
