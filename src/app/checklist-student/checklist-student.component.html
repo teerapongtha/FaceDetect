@@ -43,8 +43,8 @@
             <h5 class="mb-2">{{ checklist.title }}</h5>
             <p><strong>วิชา:</strong> {{ getSubjectName(checklist.subject_id) }}</p>
             <p><strong>รายละเอียด:</strong> {{ checklist.detail }}</p>
-            <p><strong>เวลาเริ่มต้นเช็คชื่อ:</strong> {{ checklist.time_start }}</p>
-            <p><strong>เวลาสิ้นสุดเช็คชื่อ:</strong> {{ checklist.time_end }}</p>
+            <p><strong>เวลาเริ่มต้น-สิ้นสุดเช็คชื่อ:</strong> {{ checklist.time_start }} - {{ checklist.time_end }}</p>
+            <p><strong>เวลาเริ่มต้น-สิ้นสุดการสอน:</strong> {{ checklist.subject_time_start }} - {{ checklist.subject_time_end }}</p>
             <p><strong>วันที่เช็คชื่อ:</strong> {{ formatDateThai(checklist.date) }}</p><br>
             <p><strong>วันที่ปัจจุบัน:</strong> {{ getCurrentDateThai() }} เวลา: {{ currentTime | date: 'HH:mm:ss' }}</p>
           </div>

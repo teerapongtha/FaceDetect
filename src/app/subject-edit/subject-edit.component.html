@@ -12,21 +12,29 @@
             <div class="mb-3">
               <label for="id_subject" class="form-label">รหัสวิชา :</label>
               <input type="text" class="form-control" id="id_subject" name="id_subject" placeholder="ระบุรหัสวิชา"
-                [(ngModel)]="SubjectUpdate.id_subject" required>
+                [(ngModel)]="SubjectUpdate.id_subject" required pattern="^[0-9]*$"
+                [ngClass]="{'is-invalid': editForm.controls['id_subject']?.invalid && editForm.controls['id_subject']?.touched}">
+              <div class="invalid-feedback">กรุณาใส่รหัสวิชาเป็นตัวเลขเท่านั้น</div>
             </div>
 
             <!-- Subject Name Field -->
             <div class="mb-3">
               <label for="subject_name" class="form-label">ชื่อวิชา :</label>
               <input type="text" class="form-control" id="subject_name" name="subject_name"
-                placeholder="ระบุชื่อวิชา" [(ngModel)]="SubjectUpdate.subject_name" required>
+                placeholder="ระบุชื่อวิชา" [(ngModel)]="SubjectUpdate.subject_name" required
+                pattern="^[ก-ฮ0-9\s]+$"
+                [ngClass]="{'is-invalid': editForm.controls['subject_name']?.invalid && editForm.controls['subject_name']?.touched}">
+              <div class="invalid-feedback">กรุณาใส่ชื่อวิชาเป็นภาษาไทยเท่านั้น</div>
             </div>
 
             <!-- Subject English Name Field -->
             <div class="mb-3">
               <label for="subject_engname" class="form-label">ชื่อภาษาอังกฤษของวิชา :</label>
               <input type="text" class="form-control" id="subject_engname" name="subject_engname"
-                placeholder="ระบุชื่อภาษาอังกฤษของวิชา" [(ngModel)]="SubjectUpdate.subject_engname" required>
+                placeholder="ระบุชื่อภาษาอังกฤษของวิชา" [(ngModel)]="SubjectUpdate.subject_engname" required
+                pattern="^[A-Za-z\s]+$"
+                [ngClass]="{'is-invalid': editForm.controls['subject_engname']?.invalid && editForm.controls['subject_engname']?.touched}">
+              <div class="invalid-feedback">กรุณาใส่ชื่อวิชาเป็นภาษาอังกฤษเท่านั้น</div>
             </div>
 
             <!-- Time Fields in Same Row -->
@@ -34,13 +42,15 @@
               <!-- Time Start Field -->
               <div class="col-md-6">
                 <label for="time_start" class="form-label">เวลาเรียนเริ่มต้น :</label>
-                <input type="time" class="form-control" id="time_start" name="time_start" [(ngModel)]="SubjectUpdate.time_start" required>
+                <input type="time" class="form-control" id="time_start" name="time_start"
+                  [(ngModel)]="SubjectUpdate.time_start" required>
               </div>
 
               <!-- Time End Field -->
               <div class="col-md-6">
                 <label for="time_end" class="form-label">เวลาเรียนสิ้นสุด :</label>
-                <input type="time" class="form-control" id="time_end" name="time_end" [(ngModel)]="SubjectUpdate.time_end" required>
+                <input type="time" class="form-control" id="time_end" name="time_end"
+                  [(ngModel)]="SubjectUpdate.time_end" required>
               </div>
             </div>
 
@@ -49,25 +59,34 @@
               <!-- Section Field -->
               <div class="col-md-4">
                 <label for="section" class="form-label">หมู่เรียน :</label>
-                <input type="text" class="form-control" id="section" name="section" placeholder="ระบุหมู่เรียน" [(ngModel)]="SubjectUpdate.section">
+                <input type="text" class="form-control" id="section" name="section" placeholder="ระบุหมู่เรียน" [(ngModel)]="SubjectUpdate.section" required
+                  pattern="^[0-9]*$"
+                  [ngClass]="{'is-invalid': editForm.controls['section']?.invalid && editForm.controls['section']?.touched}">
+                <div class="invalid-feedback">กรุณาใส่หมู่เรียนเป็นตัวเลขเท่านั้น</div>
               </div>
 
               <!-- Semester Field -->
               <div class="col-md-4">
                 <label for="semester" class="form-label">ภาคเรียน :</label>
-                <input type="text" class="form-control" id="semester" name="semester" placeholder="ระบุภาคเรียน" [(ngModel)]="SubjectUpdate.semester">
+                <input type="text" class="form-control" id="semester" name="semester" placeholder="ระบุภาคเรียน" [(ngModel)]="SubjectUpdate.semester" required
+                  pattern="^[0-9]*$"
+                  [ngClass]="{'is-invalid': editForm.controls['semester']?.invalid && editForm.controls['semester']?.touched}">
+                <div class="invalid-feedback">กรุณาใส่ภาคเรียนเป็นตัวเลขเท่านั้น</div>
               </div>
 
               <!-- Year Field -->
               <div class="col-md-4">
                 <label for="year" class="form-label">ปีการศึกษา :</label>
-                <input type="text" class="form-control" id="year" name="year" placeholder="ระบุปีการศึกษา" [(ngModel)]="SubjectUpdate.year">
+                <input type="text" class="form-control" id="year" name="year" placeholder="ระบุปีการศึกษา" [(ngModel)]="SubjectUpdate.year" required
+                  pattern="^[0-9]*$"
+                  [ngClass]="{'is-invalid': editForm.controls['year']?.invalid && editForm.controls['year']?.touched}">
+                <div class="invalid-feedback">กรุณาใส่ปีการศึกษาเป็นตัวเลขเท่านั้น</div>
               </div>
             </div>
 
             <!-- Submit and Back Buttons -->
             <div class="d-flex justify-content-between mt-4">
-              <button type="submit" class="btn btn-warning">
+              <button type="submit" class="btn btn-warning" [disabled]="editForm.invalid">
                 <i class="far fa-edit me-2"></i> แก้ไขข้อมูล
               </button>
               <a routerLink="/subject-manage" class="btn btn-secondary">

@@ -34,6 +34,17 @@
                   <input type="time" id="time_end" name="time_end" class="form-control" [(ngModel)]="ChecklistUpdate.time_end" required>
                 </div>
               </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="subject_time_start" class="form-label">ระบุเวลาเริ่มต้นของวิชา:</label>
+                  <input type="time" id="subject_time_start" name="subject_time_start" class="form-control" [(ngModel)]="ChecklistUpdate.subject_time_start" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="subject_time_end" class="form-label">ระบุเวลาสิ้นสุดของวิชา:</label>
+                  <input type="time" id="subject_time_end" name="subject_time_end" class="form-control" [(ngModel)]="ChecklistUpdate.subject_time_end" required>
+                </div>
+              </div>
+              
               <div class="mb-3">
                 <label for="subject-dropdown" class="form-label">เลือกรายวิชา:</label>
                 <select id="subject-dropdown" name="subject_id" class="form-select" [(ngModel)]="ChecklistUpdate.subject_id" required>

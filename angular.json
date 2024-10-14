@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "FaceDetect": {
+    "FinalProject": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -68,10 +68,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "FaceDetect:build:production"
+              "buildTarget": "FinalProject:build:production"
             },
             "development": {
-              "buildTarget": "FaceDetect:build:development"
+              "buildTarget": "FinalProject:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +79,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "FaceDetect:build"
+            "buildTarget": "FinalProject:build"
           }
         },
         "test": {

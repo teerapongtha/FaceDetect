@@ -76,7 +76,7 @@ export class ChecklistManageComponent implements OnInit {
       (error) => {
         console.error('Error fetching checklists:', error);
       }
-    );
+    );    
   }
 
   filterChecklists() {

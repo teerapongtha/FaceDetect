@@ -71,7 +71,7 @@ export class ChecklistStudentComponent implements OnInit {
   
     // แสดง loading message
     Swal.fire({
-      title: 'กรุณารอซักครู่',
+      title: 'กรุณารอสักครู่',
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading();
@@ -80,35 +80,35 @@ export class ChecklistStudentComponent implements OnInit {
   
     // อัปเดตข้อมูลเช็คชื่อย้อนหลังก่อนโหลดเช็คชื่อ
     this.updatePastAttendances().then(() => {
-      // โหลดข้อมูล checklist หลังจากการบันทึกเสร็จสิ้น
-      this.http.get<any>(`${this.dataService.apiUrl}/subject-time/${this.selectedSubjectId}`).subscribe(
-        (times) => {
-          this.subjectTimes[this.selectedSubjectId] = times;
-          const url = `${this.dataService.apiUrl}/checklist-data/student/${this.user_id}/subject/${this.selectedSubjectId}`;
+      const url = `${this.dataService.apiUrl}/checklist-data/student/${this.user_id}/subject/${this.selectedSubjectId}`;
   
-          this.http.get<Checklist[]>(url).subscribe(
-            (data) => {
-              this.checklists = data; // แสดงข้อมูลเช็คชื่อทั้งหมด
-              this.applySearch(); // ทำการกรองตามการค้นหาถ้ามี
-              Swal.close(); // ปิด loading message
-            },
-            (error) => {
-              console.error('เกิดข้อผิดพลาดในการดึงข้อมูลเช็คชื่อ:', error);
-              if (error.status === 404) {
-                this.checklists = [];
-                this.filteredChecklists = [];
-              }
-              Swal.close(); // ปิด loading message
-            }
-          );
+      this.http.get<Checklist[]>(url).subscribe(
+        (data) => {
+          this.checklists = data; // แสดงข้อมูลเช็คชื่อทั้งหมด
+  
+          // ดึงข้อมูลเวลา subject_time_start และ subject_time_end จาก checklist
+          this.checklists.forEach(checklist => {
+            this.subjectTimes[checklist.checklist_id] = {
+              time_start: checklist.subject_time_start,
+              time_end: checklist.subject_time_end
+            };
+          });
+  
+          this.applySearch(); // ทำการกรองตามการค้นหาถ้ามี
+          Swal.close(); // ปิด loading message
         },
         (error) => {
-          console.error('เกิดข้อผิดพลาดในการดึงเวลา:', error);
+          console.error('เกิดข้อผิดพลาดในการดึงข้อมูลเช็คชื่อ:', error);
+          if (error.status === 404) {
+            this.checklists = [];
+            this.filteredChecklists = [];
+          }
           Swal.close(); // ปิด loading message
         }
       );
     });
   }
+  
 
   onSubjectChange(event: any) {
     this.selectedSubjectId = event.target.value;
@@ -181,10 +181,11 @@ export class ChecklistStudentComponent implements OnInit {
   checkAttendance(checklist: Checklist, std_id: any) {
     const currentDate = new Date();
     const checklistDate = new Date(checklist.date);
-    const subjectTimes = this.subjectTimes[this.selectedSubjectId] || {};
-    
-    // ตรวจสอบว่าเช็คชื่อเลยวันแล้ว
+    const subjectTimes = this.subjectTimes[checklist.checklist_id] || {}; // ดึงเวลาเช็คชื่อ
+  
+    // ตรวจสอบว่าเป็นวันที่เช็คชื่อหรือไม่
     if (currentDate.toDateString() !== checklistDate.toDateString()) {
+      // ถ้าวันที่ปัจจุบันยังไม่ถึงวันที่ของการเช็คชื่อ
       if (currentDate < checklistDate) {
         Swal.fire({
           icon: 'warning',
@@ -192,48 +193,51 @@ export class ChecklistStudentComponent implements OnInit {
           text: 'ยังไม่ถึงวันที่เช็คชื่อ'
         });
         return;
-      } else if (currentDate > checklistDate) {
-        // ถ้าเลยวันเช็คชื่อ ให้บันทึกเป็น "ขาดเรียน" โดยอัตโนมัติ
+      } else {
+        // ถ้าวันที่ปัจจุบันเลยวันที่ของรายการเช็คชื่อ
         Swal.fire({
           icon: 'warning',
           title: 'ไม่สามารถเช็คชื่อได้',
-          text: 'วันที่เช็คชื่อได้ผ่านมาแล้ว'
+          text: 'วันที่เช็คชื่อได้ผ่านมาแล้ว คุณจะถูกบันทึกเป็นขาดเรียน'
         }).then(() => {
           this.recordAttendance(checklist.checklist_id, 'ขาดเรียน'); // บันทึกเป็น "ขาดเรียน"
         });
         return;
       }
+    } else {
+      const currentTimeStr = currentDate.toLocaleTimeString('th-TH', { hour12: false });
+      const timeStart = subjectTimes.time_start;
+      const timeEnd = subjectTimes.time_end;
+  
+      // ถ้าวันที่ปัจจุบันคือวันที่เดียวกันกับวันที่ของการเช็คชื่อแต่ยังไม่ถึงเวลา
+      if (currentTimeStr < timeStart) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'ไม่สามารถเช็คชื่อได้',
+          text: 'ยังไม่ถึงเวลาเช็คชื่อ'
+        });
+        return;
+      }
+  
+      // ถ้าวันที่ปัจจุบันคือวันที่เดียวกันกับวันที่ของการเช็คชื่อแต่เลยเวลา
+      if (currentTimeStr > timeEnd) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'ไม่สามารถเช็คชื่อได้',
+          text: 'คุณจะถูกบันทึกเป็นขาดเรียน'
+        }).then(() => {
+          this.recordAttendance(checklist.checklist_id, 'ขาดเรียน'); // บันทึกเป็น "ขาดเรียน"
+        });
+        return;
+      }
+  
+      // หากอยู่ในช่วงเวลาที่เช็คชื่อได้ ให้ไปที่หน้าสำหรับเช็คชื่อ
+      this.route.navigate(['/checklist-attendance', checklist.checklist_id, { std_id }]);
     }
-  
-    const currentTimeStr = currentDate.toLocaleTimeString('th-TH', { hour12: false });
-    const timeStart = subjectTimes.time_start;
-    const timeEnd = subjectTimes.time_end;
-  
-    // ตรวจสอบว่าถึงเวลาหรือเลยเวลาเช็คชื่อหรือยัง
-    if (currentTimeStr < timeStart) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'ยังไม่ถึงเวลาเช็คชื่อ',
-        text: 'กรุณารอจนถึงเวลาเริ่มเรียน'
-      });
-      return;
-    }
-  
-    if (currentTimeStr > timeEnd) {
-      // ถ้าเลยเวลา ให้บันทึกเป็น "ขาดเรียน" โดยอัตโนมัติ
-      Swal.fire({
-        icon: 'error',
-        title: 'หมดเวลาเช็คชื่อ',
-        text: 'คุณจะถูกบันทึกเป็นขาดเรียน'
-      }).then(() => {
-        this.recordAttendance(checklist.checklist_id, 'ขาดเรียน'); // บันทึกเป็น "ขาดเรียน"
-      });
-      return;
-    }
-  
-    // หากอยู่ในช่วงเวลาที่เช็คชื่อได้ ให้ไปที่หน้าสำหรับเช็คชื่อ
-    this.route.navigate(['/checklist-attendance', checklist.checklist_id, { std_id }]);
   }
+  
+
+
   
   recordAttendance(checklistId: number, status: string) {
     this.http.post(`${this.dataService.apiUrl}/update-attendance`, {

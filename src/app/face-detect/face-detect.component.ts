@@ -45,7 +45,9 @@ export class FaceDetectComponent implements AfterViewInit, OnDestroy {
     this.route.paramMap.subscribe(params => {
       this.stdId = params.get('std_id');
       if (this.stdId) {
+        this.showLoadingModal();
         this.loadFaceAPIModels().then(() => {
+          Swal.close(); // ปิด modal เมื่อโหลดโมเดลเสร็จสิ้น
           this.startVideo();
           this.fetchImageData();
         });
@@ -67,7 +69,7 @@ export class FaceDetectComponent implements AfterViewInit, OnDestroy {
 
     navigator.mediaDevices.getUserMedia({ video: true })
       .then((stream) => {
-        this.videoStream = stream; // Store the stream
+        this.videoStream = stream; // เก็บ stream ไว้
         video.srcObject = stream;
       })
       .catch(err => console.error('เกิดข้อผิดพลาดในการเข้าถึงกล้อง:', err));
@@ -119,7 +121,6 @@ export class FaceDetectComponent implements AfterViewInit, OnDestroy {
       const savedDescriptor = JSON.parse(userData.extract_feature);
       if (faceDescriptor.length === savedDescriptor.length) {
         const distance = faceapi.euclideanDistance(faceDescriptor, savedDescriptor);
-        //เพิ่ม check treshold -> distance < 0.4
         if (distance < minDistance && distance < 0.4) {
           minDistance = distance;
           bestMatch = { userData, distance };
@@ -164,7 +165,6 @@ export class FaceDetectComponent implements AfterViewInit, OnDestroy {
       verificationResult = { fname: 'ไม่พบชื่อ', lname: 'ไม่พบนามสกุล', distance: 'N/A', match: false };
     }
 
-    // Display result using SweetAlert2
     Swal.fire({
       title: 'ผลการตรวจสอบ',
       html: `
@@ -176,7 +176,7 @@ export class FaceDetectComponent implements AfterViewInit, OnDestroy {
       confirmButtonText: 'ตกลง'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.stopVideo(); // Stop video on confirm
+        this.stopVideo();
         this.router.navigate(['/recognition-manage']);
       }
     });
@@ -185,18 +185,29 @@ export class FaceDetectComponent implements AfterViewInit, OnDestroy {
   stopVideo() {
     const video = this.videoElement.nativeElement;
     if (this.videoStream) {
-      this.videoStream.getTracks().forEach(track => track.stop()); // Stop all video tracks
-      this.videoStream = null; // Clear the stream
+      this.videoStream.getTracks().forEach(track => track.stop());
+      this.videoStream = null;
     }
-    video.srcObject = null; // Clear the video source
+    video.srcObject = null;
+  }
+
+  showLoadingModal() {
+    Swal.fire({
+      title: 'กำลังโหลดโมเดล...',
+      html: 'กรุณารอสักครู่...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
   }
 
   goBack() {
-    this.stopVideo(); // Stop video when navigating back
+    this.stopVideo();
     this.router.navigate(['/recognition-manage']);
   }
 
   ngOnDestroy() {
-    this.stopVideo(); // Ensure video is stopped when component is destroyed
+    this.stopVideo();
   }
 }

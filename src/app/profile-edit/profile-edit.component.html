@@ -1,58 +1,68 @@
 <div class="container py-4">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card shadow-sm">
-          <div class="card-header bg-primary text-white text-center">
-            <h2 class="mb-0">แก้ไขข้อมูลส่วนตัว</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+          <h2 class="mb-0">แก้ไขข้อมูลส่วนตัว</h2>
+        </div>
+        <div class="card-body text-center">
+          <!-- Profile Picture -->
+          <div class="mb-4">
+            <img [src]="ProfileUpdate.img_profiles" alt="Profile Picture" class="img-fluid rounded-circle" style="max-width: 150px;">
           </div>
-          <div class="card-body text-center">
-            <!-- Profile Picture -->
-            <div class="mb-4">
-              <img [src]="ProfileUpdate.img_profiles" alt="Profile Picture" class="img-fluid rounded-circle" style="max-width: 150px;">
+          <!-- Form -->
+          <form method="post" (ngSubmit)="updateProfile()" #editForm="ngForm">
+            <!-- Title Dropdown -->
+            <div class="mb-3">
+              <label for="title-dropdown" class="form-label fs-5">คำนำหน้า :</label>
+              <select id="title-dropdown" name="title" class="form-select" [(ngModel)]="ProfileUpdate.title">
+                <option *ngIf="ProfileUpdate.role === 'teacher'" value="อ.">อ.</option>
+                <option *ngIf="ProfileUpdate.role === 'teacher'" value="อ.ดร.">อ.ดร.</option>
+                <option *ngIf="ProfileUpdate.role === 'teacher'" value="ดร.">ดร.</option>
+                <option *ngIf="ProfileUpdate.role === 'teacher'" value="ผศ.ดร.">ผศ.ดร.</option>
+                <option *ngIf="ProfileUpdate.role === 'teacher'" value="รศ.ดร.">รศ.ดร.</option>
+                <option *ngIf="ProfileUpdate.role === 'teacher'" value="ศ.ดร.">ศ.ดร.</option>
+                <option *ngIf="ProfileUpdate.role === 'student'" value="นาย">นาย</option>
+                <option *ngIf="ProfileUpdate.role === 'student'" value="นางสาว">นางสาว</option>
+              </select>
             </div>
-            <!-- Form -->
-            <form method="post" (ngSubmit)="updateProfile()" #editForm="ngForm">
-              <!-- Title Dropdown -->
-              <div class="mb-3">
-                <label for="title-dropdown" class="form-label fs-5">คำนำหน้า :</label>
-                <select id="title-dropdown" name="title" class="form-select" [(ngModel)]="ProfileUpdate.title">
-                  <option *ngIf="ProfileUpdate.role === 'teacher'" value="อ.">อ.</option>
-                  <option *ngIf="ProfileUpdate.role === 'teacher'" value="อ.ดร.">อ.ดร.</option>
-                  <option *ngIf="ProfileUpdate.role === 'teacher'" value="ดร.">ดร.</option>
-                  <option *ngIf="ProfileUpdate.role === 'teacher'" value="ผศ.ดร.">ผศ.ดร.</option>
-                  <option *ngIf="ProfileUpdate.role === 'teacher'" value="ศ.ดร.">ศ.ดร.</option>
-                  <option *ngIf="ProfileUpdate.role === 'student'" value="นาย">นาย</option>
-                  <option *ngIf="ProfileUpdate.role === 'student'" value="นางสาว">นางสาว</option>
-                </select>
+            <!-- First Name Field -->
+            <div class="mb-3">
+              <label for="fullname" class="form-label fs-5">ชื่อ :</label>
+              <input type="text" class="form-control" id="fullname" name="fname" [(ngModel)]="ProfileUpdate.fname" placeholder="ระบุชื่อ" required
+                     [ngClass]="{'is-invalid': editForm.controls['fname']?.invalid && (editForm.controls['fname']?.touched || editForm.submitted)}"
+                     pattern="^[ก-๙a-zA-Z\s]+$">
+              <div *ngIf="editForm.controls['fname']?.invalid && (editForm.controls['fname']?.touched || editForm.submitted)" class="invalid-feedback">
+                กรุณากรอกชื่อเป็นภาษาไทยหรืออังกฤษเท่านั้น
               </div>
-              <!-- First Name Field -->
-              <div class="mb-3">
-                <label for="fullname" class="form-label fs-5">ชื่อ :</label>
-                <input type="text" class="form-control" id="fullname" name="fname" [(ngModel)]="ProfileUpdate.fname" placeholder="ระบุชื่อ">
+            </div>
+            <!-- Last Name Field -->
+            <div class="mb-3">
+              <label for="lastname" class="form-label fs-5">สกุล :</label>
+              <input type="text" class="form-control" id="lastname" name="lname" [(ngModel)]="ProfileUpdate.lname" placeholder="ระบุสกุล" required
+                     [ngClass]="{'is-invalid': editForm.controls['lname']?.invalid && (editForm.controls['lname']?.touched || editForm.submitted)}"
+                     pattern="^[ก-๙a-zA-Z\s]+$">
+              <div *ngIf="editForm.controls['lname']?.invalid && (editForm.controls['lname']?.touched || editForm.submitted)" class="invalid-feedback">
+                กรุณากรอกสกุลเป็นภาษาไทยหรืออังกฤษเท่านั้น
               </div>
-              <!-- Last Name Field -->
-              <div class="mb-3">
-                <label for="lastname" class="form-label fs-5">สกุล :</label>
-                <input type="text" class="form-control" id="lastname" name="lname" [(ngModel)]="ProfileUpdate.lname" placeholder="ระบุสกุล">
-              </div>
-              <!-- Password Field -->
-              <div class="mb-3">
-                <label for="password" class="form-label fs-5">รหัสผ่าน:</label>
-                <input type="password" class="form-control" id="password" name="password" [(ngModel)]="ProfileUpdate.password" placeholder="ระบุรหัสผ่านที่ต้องการแก้ไข...">
-              </div>
-              <!-- Buttons -->
-              <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">
-                  <i class="far fa-edit me-2"></i> บันทึกข้อมูล
-                </button>
-                <a routerLink="/profile" class="btn btn-secondary">
-                  <i class="fas fa-arrow-alt-circle-left me-2"></i> ยกเลิก
-                </a>
-              </div>
-            </form>
-          </div>
+            </div>
+            <!-- Password Field -->
+            <div class="mb-3">
+              <label for="password" class="form-label fs-5">รหัสผ่าน:</label>
+              <input type="password" class="form-control" id="password" name="password" [(ngModel)]="ProfileUpdate.password" placeholder="ระบุรหัสผ่านที่ต้องการแก้ไข...">
+            </div>
+            <!-- Buttons -->
+            <div class="d-flex justify-content-between">
+              <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">
+                <i class="far fa-edit me-2"></i> บันทึกข้อมูล
+              </button>
+              <a routerLink="/profile" class="btn btn-secondary">
+                <i class="fas fa-arrow-alt-circle-left me-2"></i> ยกเลิก
+              </a>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

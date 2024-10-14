@@ -27,6 +27,7 @@ export class ChecklistAttendanceComponent implements AfterViewInit, OnDestroy {
   videoStream: MediaStream | null = null;
   date: string;
   currentTime: Date = new Date();
+  
 
   constructor(
     private dataService: DataService,
@@ -288,9 +289,7 @@ export class ChecklistAttendanceComponent implements AfterViewInit, OnDestroy {
     }
 }
 
-  
-  
-  
+
 
   captureImageFromVideo(video: HTMLVideoElement): Promise<Blob> {
     return new Promise<Blob>((resolve, reject) => {
@@ -325,3 +324,5 @@ export class ChecklistAttendanceComponent implements AfterViewInit, OnDestroy {
     this.stopVideo(); // Stop video stream when the component is destroyed
   }
 }
+
+

@@ -25,6 +25,8 @@ export class ChecklistCreateComponent implements OnInit {
   date: Date | null = null;
   time_start: string = '';
   time_end: string = '';
+  subject_time_start: string = '';
+  subject_time_end: string = ''; 
   teacher_id: string = '';
   teacher_name: string = '';
   subject_id: string = '';
@@ -76,6 +78,8 @@ export class ChecklistCreateComponent implements OnInit {
       date: formattedDate,
       time_start: this.time_start,
       time_end: this.time_end,
+      subject_time_start: this.subject_time_start, // new field
+      subject_time_end: this.subject_time_end, // new field
       subject_id: this.subject_id,
       teacher_id: this.teacher_id
     };

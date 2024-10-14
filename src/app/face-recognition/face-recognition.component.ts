@@ -22,23 +22,58 @@ export class FaceRecognitionComponent implements AfterViewInit, OnDestroy {
 
   userId: string | undefined;
   private stream: MediaStream | null = null;
+  private modelsLoaded: boolean = false; // ตัวแปรตรวจสอบสถานะการโหลดโมเดล
 
   constructor(private dataService: DataService, private http: HttpClient, private router: Router) {}
 
   async ngAfterViewInit() {
-    await this.loadFaceAPIModels();
-    this.startVideo();
-    this.getUserId();
+    Swal.fire({
+      title: 'กำลังโหลด...',
+      text: 'กรุณารอสักครู่ กำลังเตรียมการรู้จำใบหน้า',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(); // Show loading screen
+      }
+    });
+
+    try {
+      await this.loadFaceAPIModels(); // Wait for models to load
+      Swal.close(); // Close the loading screen once done
+      this.startVideo(); // Start the video stream after models are loaded
+      this.getUserId(); // Fetch the user ID
+    } catch (error) {
+      Swal.fire('เกิดข้อผิดพลาด!', 'ไม่สามารถโหลดโมเดลได้', 'error');
+      console.error('Error loading Face API models:', error);
+    }
   }
 
   async loadFaceAPIModels() {
-    await Promise.all([
-      faceapi.nets.tinyFaceDetector.loadFromUri('assets/models'),
-      faceapi.nets.faceLandmark68Net.loadFromUri('assets/models'),
-      faceapi.nets.faceRecognitionNet.loadFromUri('assets/models'),
-      faceapi.nets.faceExpressionNet.loadFromUri('assets/models')
-    ]);
+    // เช็คว่าโมเดลถูกโหลดแล้วหรือยัง
+    if (this.modelsLoaded) {
+      return; // ถ้าโหลดแล้วไม่ต้องโหลดซ้ำ
+    }
+  
+    const loadModel = async (model: Promise<any>) => {
+      await model;
+    };
+  
+    try {
+      // โหลดโมเดลแบบขนานเพื่อให้เร็วขึ้น
+      await Promise.all([
+        loadModel(faceapi.nets.tinyFaceDetector.loadFromUri('assets/models')),
+        loadModel(faceapi.nets.faceLandmark68Net.loadFromUri('assets/models')),
+        loadModel(faceapi.nets.faceRecognitionNet.loadFromUri('assets/models')),
+        loadModel(faceapi.nets.faceExpressionNet.loadFromUri('assets/models'))
+      ]);
+    
+      this.modelsLoaded = true; // ตั้งค่าการโหลดโมเดลให้เป็นจริง
+      localStorage.setItem('faceApiModelsLoaded', 'true'); // บันทึกสถานะการโหลดโมเดลใน localStorage
+    } catch (error) {
+      console.error('Error loading Face API models:', error);
+      throw error; // โยนข้อผิดพลาดกลับ
+    }
   }
+  
 
   getUserId() {
     this.dataService.getUserData().subscribe(

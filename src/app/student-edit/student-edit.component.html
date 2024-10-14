@@ -23,35 +23,56 @@
                 <option value="นาย">นาย</option>
                 <option value="นางสาว">นางสาว</option>
               </select>
+              <div *ngIf="editForm.controls['title']?.invalid && (editForm.controls['title']?.touched || editForm.submitted)" class="invalid-feedback">
+                กรุณาเลือกคำนำหน้า
+              </div>
             </div>
 
             <!-- First Name Field -->
             <div class="mb-3">
               <label for="fullname" class="form-label">ชื่อ :</label>
-              <input type="text" class="form-control" id="fullname" name="firstname" placeholder="ระบุชื่อที่ต้องการแก้ไข..." [(ngModel)]="StudentUpdate.fname" required>
+              <input type="text" class="form-control" id="fullname" name="firstname" placeholder="ระบุชื่อที่ต้องการแก้ไข..." [(ngModel)]="StudentUpdate.fname" required
+                     [ngClass]="{'is-invalid': editForm.controls['firstname']?.invalid && (editForm.controls['firstname']?.touched || editForm.submitted)}"
+                     pattern="^[ก-๙a-zA-Z\s]+$">
+              <div *ngIf="editForm.controls['firstname']?.invalid && (editForm.controls['firstname']?.touched || editForm.submitted)" class="invalid-feedback">
+                กรุณากรอกชื่อเป็นภาษาไทยหรืออังกฤษเท่านั้น
+              </div>
             </div>
 
             <!-- Last Name Field -->
             <div class="mb-3">
               <label for="lastname" class="form-label">สกุล :</label>
-              <input type="text" class="form-control" id="lastname" name="lastname" placeholder="ระบุสกุลที่ต้องการแก้ไข..." [(ngModel)]="StudentUpdate.lname" required>
+              <input type="text" class="form-control" id="lastname" name="lastname" placeholder="ระบุสกุลที่ต้องการแก้ไข..." [(ngModel)]="StudentUpdate.lname" required
+                     [ngClass]="{'is-invalid': editForm.controls['lastname']?.invalid && (editForm.controls['lastname']?.touched || editForm.submitted)}"
+                     pattern="^[ก-๙a-zA-Z\s]+$">
+              <div *ngIf="editForm.controls['lastname']?.invalid && (editForm.controls['lastname']?.touched || editForm.submitted)" class="invalid-feedback">
+                กรุณากรอกสกุลเป็นภาษาไทยหรืออังกฤษเท่านั้น
+              </div>
             </div>
 
             <!-- Email Field -->
             <div class="mb-3">
               <label for="email" class="form-label">อีเมล :</label>
-              <input type="email" class="form-control" id="email" name="email" placeholder="ระบุอีเมลที่ต้องการแก้ไข..." [(ngModel)]="StudentUpdate.email" required>
+              <input type="email" class="form-control" id="email" name="email" placeholder="ระบุอีเมลที่ต้องการแก้ไข..." [(ngModel)]="StudentUpdate.email" required
+                     [ngClass]="{'is-invalid': editForm.controls['email']?.invalid && (editForm.controls['email']?.touched || editForm.submitted)}">
+              <div *ngIf="editForm.controls['email']?.invalid && (editForm.controls['email']?.touched || editForm.submitted)" class="invalid-feedback">
+                กรุณากรอกอีเมลที่ถูกต้อง
+              </div>
             </div>
 
             <!-- Password Field -->
             <div class="mb-3">
               <label for="password" class="form-label">รหัสผ่าน :</label>
-              <input type="text" class="form-control" id="password" name="password" placeholder="ระบุรหัสผ่านที่ต้องการแก้ไข..." [(ngModel)]="StudentUpdate.password" required>
+              <input type="text" class="form-control" id="password" name="password" placeholder="ระบุรหัสผ่านที่ต้องการแก้ไข..." [(ngModel)]="StudentUpdate.password" required
+                     [ngClass]="{'is-invalid': editForm.controls['password']?.invalid && (editForm.controls['password']?.touched || editForm.submitted)}">
+              <div *ngIf="editForm.controls['password']?.invalid && (editForm.controls['password']?.touched || editForm.submitted)" class="invalid-feedback">
+                กรุณากรอกรหัสผ่าน
+              </div>
             </div>
 
             <!-- Buttons -->
             <div class="d-flex justify-content-between mt-4">
-              <button type="submit" class="btn btn-primary">
+              <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">
                 <i class="far fa-save me-2"></i> บันทึกข้อมูล
               </button>
               <a routerLink="/student-manage" class="btn btn-secondary">

@@ -43,23 +43,43 @@ export class ChecklistEditComponent implements OnInit {
   }
 
   getUserData() {
+    Swal.fire({
+      title: 'กำลังโหลดข้อมูล...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
     this.dataService.getUserData().subscribe(userData => {
       if (userData && userData.teacher_id) {
         this.teacher_id = userData.teacher_id;
         this.getSubjects(); // Retrieve subjects after getting teacher_id
+        Swal.close(); // Close the loading popup when data is loaded
       } else {
         console.error('ไม่พบข้อมูลผู้ใช้');
+        Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถดึงข้อมูลผู้ใช้ได้', 'error');
       }
     });
   }
 
   getChecklistData(itemId: string) {
+    Swal.fire({
+      title: 'กำลังโหลดข้อมูลเช็คชื่อ...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
     this.http.get<any>(`${this.dataService.apiUrl}/checklist-data/${itemId}`).subscribe((data) => {
       this.ChecklistUpdate = data;
-      // Convert date from API format to Date object
       if (data.date) {
         this.ChecklistUpdate.date = new Date(data.date);
       }
+      Swal.close(); // Close loading when data is received
+    }, (error) => {
+      Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถโหลดข้อมูลได้', 'error');
     });
   }
 
@@ -74,12 +94,18 @@ export class ChecklistEditComponent implements OnInit {
   UpdateChecklist() {
     // Convert Date object to 'YYYY-MM-DD' format
     if (this.ChecklistUpdate.date instanceof Date) {
-      // Use a helper function to correctly handle date formatting
       this.ChecklistUpdate.date = this.formatDate(this.ChecklistUpdate.date);
     }
-  
-    // Check if date conversion was successful
+
     if (typeof this.ChecklistUpdate.date === 'string' && this.ChecklistUpdate.date.length === 10) {
+      Swal.fire({
+        title: 'กำลังบันทึกข้อมูล...',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
       this.http.put(`${this.dataService.apiUrl}/checklist-update/${this.ChecklistUpdate.checklist_id}`, this.ChecklistUpdate).subscribe(
         () => {
           Swal.fire(
@@ -107,7 +133,6 @@ export class ChecklistEditComponent implements OnInit {
     }
   }
 
-  // Helper function to format date as 'YYYY-MM-DD'
   private formatDate(date: Date): string {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
