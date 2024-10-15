@@ -135,7 +135,8 @@ export class StudentManageComponent implements OnInit {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'ใช่, ลบ!'
+        confirmButtonText: 'ใช่, ลบ!',
+        cancelButtonText: 'ยกเลิก'
     }).then((result) => {
         if (result.isConfirmed) {
             this.http.delete(`${this.dataService.apiUrl}/student-delete/${studentId}/${this.selectedSubjectId}`).subscribe(

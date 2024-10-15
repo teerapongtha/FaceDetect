@@ -49,7 +49,7 @@
                 <label for="subject-dropdown" class="form-label">เลือกรายวิชา:</label>
                 <select id="subject-dropdown" name="subject_id" class="form-select" [(ngModel)]="ChecklistUpdate.subject_id" required>
                   <option *ngFor="let subject of subjects" [value]="subject.subject_id">
-                    {{ subject.subject_name }} ({{ subject.subject_engname }}) - หมู่เรียนที่ : {{ subject.section }} . ภาคเรียนที่ : {{ subject.semester }} . ปีการศึกษา {{ subject.year }} 
+                    {{ subject.subject_name }} ({{ subject.subject_engname }}) - หมู่เรียนที่ : {{ subject.section }} || ภาคเรียนที่ : {{ subject.semester }} || ปีการศึกษา {{ subject.year }} 
                   </option>
                 </select>
               </div>

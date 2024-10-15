@@ -4,7 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { DataService } from '../service/data.service';
 import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
-import { AuthService } from '../service/auth.service'; // เพิ่ม import AuthService
+import { AuthService } from '../service/auth.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -38,7 +38,7 @@ export class SubjectAddComponent implements OnInit {
       (userData) => {
         if (userData && userData.title && userData.fname && userData.lname && userData.teacher_id) {
           this.teacher_name = `${userData.title} ${userData.fname} ${userData.lname}`;
-          this.teacher_id = userData.teacher_id; // เก็บ teacher_id
+          this.teacher_id = userData.teacher_id; 
         } else {
           console.error('Teacher information not available');
         }
@@ -50,6 +50,17 @@ export class SubjectAddComponent implements OnInit {
   }
 
   SubjectAdd(): void {
+    // ตรวจสอบว่าเวลาเริ่มต้นไม่เกินหรือเท่ากับเวลาสิ้นสุด
+    if (this.time_start >= this.time_end) {
+      Swal.fire({
+        title: 'เกิดข้อผิดพลาด',
+        text: 'เวลาเริ่มต้นห้ามเกินหรือเท่ากับเวลาสิ้นสุด',
+        icon: 'error',
+        confirmButtonText: 'ตกลง'
+      });
+      return;
+    }
+
     const SubjectData = {
       id_subject: this.id_subject,
       subject_name: this.subject_name,
@@ -59,7 +70,7 @@ export class SubjectAddComponent implements OnInit {
       section: this.section,
       semester: this.semester,
       year: this.year,
-      teacher_id: this.teacher_id // ใช้ teacher_id ตอนบันทึก
+      teacher_id: this.teacher_id
     };
 
     this.http.post<any>(this.data.apiUrl + "/subject-add", SubjectData).subscribe(

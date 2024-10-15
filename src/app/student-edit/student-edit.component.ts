@@ -16,8 +16,9 @@ import { DataService } from '../service/data.service';
 })
 export class StudentEditComponent implements OnInit {
   StudentUpdate: any = {};
+  originalData: any = {};
 
-  constructor(private dataService: DataService, private http: HttpClient, private route: ActivatedRoute, private router: Router) { }
+  constructor(private dataService: DataService, private http: HttpClient, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
@@ -25,12 +26,24 @@ export class StudentEditComponent implements OnInit {
 
       this.http.get(this.dataService.apiUrl + `/student-data/${itemId}`).subscribe((data: any) => {
         this.StudentUpdate = data;
+        this.originalData = { ...data };  // เก็บข้อมูลต้นฉบับไว้
       });
     });
   }
 
+  isFormChanged(): boolean {
+    return JSON.stringify(this.StudentUpdate) !== JSON.stringify(this.originalData);
+  }
+
   updateStudent() {
-    this.http.put(this.dataService.apiUrl + `/student-edit/${this.StudentUpdate.std_id}`, this.StudentUpdate).subscribe(() => {
+    const updatedData = {
+      title: this.StudentUpdate.title || undefined,
+      fname: this.StudentUpdate.fname || undefined,
+      lname: this.StudentUpdate.lname || undefined,
+      email: this.StudentUpdate.email || undefined
+    };
+
+    this.http.put(this.dataService.apiUrl + `/student-edit/${this.StudentUpdate.std_id}`, updatedData).subscribe(() => {
       Swal.fire(
         'แก้ไขข้อมูลนิสิตสำเร็จ!',
         'ข้อมูลถูกแก้ไขแล้ว',

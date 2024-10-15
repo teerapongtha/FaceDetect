@@ -58,6 +58,17 @@ export class StudentAddComponent implements OnInit {
   }
 
   StudentAdd(): void {
+    // Check if email contains '@'
+    if (!this.email.includes('@')) {
+      Swal.fire({
+        title: 'เกิดข้อผิดพลาด',
+        text: 'กรุณาระบุอีเมลให้ถูกต้อง',
+        icon: 'error',
+        confirmButtonText: 'ตกลง'
+      });
+      return; // Stop the function execution if email is invalid
+    }
+  
     const studentData = {
       std_id: this.std_id,
       title: this.title,
@@ -65,16 +76,7 @@ export class StudentAddComponent implements OnInit {
       lname: this.lname,
       email: this.email,
       subject_id: this.subject_id,
-    };
-  
-    Swal.fire({
-      title: 'กำลังบันทึกข้อมูล...',
-      text: 'กรุณารอสักครู่',
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
-    });
+    };  
   
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
   
@@ -109,6 +111,7 @@ export class StudentAddComponent implements OnInit {
       }
     );
   }
+  
   
 
 // Send email with student information
@@ -152,6 +155,15 @@ sendEmail(password: string | null, isExistingStudent: boolean): void {
     message: messageContent,
     isHtml: true // Send as HTML email
   };
+
+  Swal.fire({
+    title: 'กำลังบันทึกข้อมูล...',
+    text: 'กรุณารอสักครู่',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
 
   this.http.post<any>(`${this.dataService.apiUrl}/send-email`, emailData, {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

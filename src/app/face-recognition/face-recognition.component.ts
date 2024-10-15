@@ -163,7 +163,7 @@ export class FaceRecognitionComponent implements AfterViewInit, OnDestroy {
   
               Swal.fire({
                 title: 'สำเร็จ!',
-                text: 'บันทึกรูปภาพสำเร็จแล้ว',
+                text: 'บันทึกข้อมูลใบหน้าสำเร็จแล้ว',
                 icon: 'success',
                 confirmButtonText: 'ตกลง'
               }).then((result) => {

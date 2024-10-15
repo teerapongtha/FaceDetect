@@ -98,30 +98,42 @@ export class ChecklistManageComponent implements OnInit {
 
   DeleteChecklist(checklist_id: number) {
     Swal.fire({
-      title: 'คุณแน่ใจที่จะลบรายการนี้หรือไม่?',
-      text: 'การกระทำนี้ไม่สามารถยกเลิกได้!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'ใช่, ลบรายการนี้',
-      cancelButtonText: 'ยกเลิก'
+        title: 'คุณแน่ใจที่จะลบรายการนี้หรือไม่?',
+        text: 'การกระทำนี้ไม่สามารถยกเลิกได้!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'ใช่, ลบรายการนี้',
+        cancelButtonText: 'ยกเลิก'
     }).then((result) => {
-      if (result.isConfirmed) {
-        this.http.delete(this.dataService.apiUrl + `/checklist-delete/${checklist_id}`).subscribe(
-          () => {
-            this.loadChecklist();
-            Swal.fire(
-              'ลบรายการสำเร็จ!',
-              'รายการถูกลบแล้ว',
-              'success'
+        if (result.isConfirmed) {
+            this.http.delete(this.dataService.apiUrl + `/checklist-delete/${checklist_id}`).subscribe(
+                () => {
+                    this.loadChecklist();
+                    Swal.fire('ลบรายการสำเร็จ!', 'รายการถูกลบแล้ว', 'success');
+                },
+                (error) => {
+                    if (error.status === 403) {
+                        Swal.fire({
+                            title: 'เกิดข้อผิดพลาด',
+                            text: 'ไม่สามารถลบรายการเช็คชื่อได้ เนื่องจากมีข้อมูลการเช็คชื่อแล้ว',
+                            icon: 'error',
+                            confirmButtonText: 'ตกลง'
+                        });
+                    } else {
+                        console.error('เกิดข้อผิดพลาดในการลบรายการ: ', error);
+                        Swal.fire({
+                            title: 'เกิดข้อผิดพลาด',
+                            text: 'ไม่สามารถลบรายการได้',
+                            icon: 'error',
+                            confirmButtonText: 'ตกลง'
+                        });
+                    }
+                }
             );
-          },
-          (error) => {
-            console.error('เกิดข้อผิดพลาดในการลบรายการ: ', error);
-          }
-        );
-      }
+        }
     });
-  }
+}
+
 
   UpdateChecklist(checklist: Checklist) {
     this.route.navigate(['/checklist-update', checklist.checklist_id]);

@@ -205,6 +205,108 @@ resetFilters() {
     });
   }
 
+  // updateChart() {
+  //   if (!this.chartCanvas?.nativeElement) {
+  //     console.error('Chart canvas element is not available.');
+  //     return;
+  //   }
+  
+  //   if (this.chart) {
+  //     this.chart.destroy(); // Destroy the previous chart instance
+  //   }
+  
+  //   const monthsData = this.filteredAttendanceRecords.reduce((acc, record) => {
+  //     const date = new Date(record.date);
+  //     const monthKey = `${date.getFullYear()}-${date.getMonth() + 1}`; // Format as YYYY-MM
+  
+  //     if (!acc[monthKey]) {
+  //       acc[monthKey] = { present: 0, late: 0, absent: 0, dates: [] };
+  //     }
+  
+  //     if (record.status === 'มาเรียน') {
+  //       acc[monthKey].present++;
+  //     } else if (record.status === 'มาสาย') {
+  //       acc[monthKey].late++;
+  //     } else if (record.status === 'ขาดเรียน') {
+  //       acc[monthKey].absent++;
+  //       acc[monthKey].dates.push(record.date); // Collect dates for absent records
+  //     }
+  
+  //     return acc;
+  //   }, {} as { [key: string]: { present: number, late: number, absent: number, dates: string[] } });
+  
+  //   const months = Object.keys(monthsData);
+  //   const presentCounts = months.map(month => monthsData[month].present);
+  //   const absentCounts = months.map(month => monthsData[month].absent);
+  //   const lateCounts = months.map(month => monthsData[month].late);
+  
+  //   this.chart = new Chart(this.chartCanvas.nativeElement, {
+  //     type: 'bar',
+  //     data: {
+  //       labels: months.map(month => this.formatMonthThai(month.split('-')[1])),
+  //       datasets: [
+  //         {
+  //           label: 'จำนวนที่มาเรียน',
+  //           data: presentCounts,
+  //           backgroundColor: '#28a745',
+  //           borderColor: 'rgba(54, 162, 235, 1)',
+  //           borderWidth: 1
+  //         },
+  //         {
+  //           label: 'จำนวนที่ขาดเรียน',
+  //           data: absentCounts,
+  //           backgroundColor: '#dc3545',
+  //           borderColor: 'rgba(255, 99, 132, 1)',
+  //           borderWidth: 1
+  //         },
+  //         {
+  //           label: 'จำนวนที่มาสาย',
+  //           data: lateCounts,
+  //           backgroundColor: '#ffc107',
+  //           borderColor: 'rgba(255, 206, 86, 1)',
+  //           borderWidth: 1
+  //         }
+  //       ]
+  //     },
+  //     options: {
+  //       responsive: true,
+  //       plugins: {
+  //         tooltip: {
+  //           callbacks: {
+  //             label: (context) => {
+  //               const month = months[context.dataIndex];
+  //               const data = monthsData[month];
+  //               const status = context.dataset.label;
+  
+  //               let info = `เดือน: ${this.formatMonthThai(month.split('-')[1])}`;
+  //               if (status === 'จำนวนที่มาเรียน') {
+  //                 info += ` - มาเรียน: ${data.present} วัน`;
+  //               } else if (status === 'จำนวนที่ขาดเรียน') {
+  //                 info += ` - ขาดเรียน: ${data.absent} วัน`;
+  //                 info += ` (${data.dates.map((date: string) => this.formatDateThai(date)).join(', ')})`; // Format dates
+  //               } else if (status === 'จำนวนที่มาสาย') {
+  //                 info += ` - มาสาย: ${data.late} วัน`;
+  //               }
+  //               return info;
+  //             }
+  //           }
+  //         }
+  //       },
+  //       scales: {
+  //         y: {
+  //           ticks: {
+  //             stepSize: 1, // กำหนดช่วงของค่าในแกน Y ให้แสดงทีละ 1
+  //             callback: function(value) {
+  //               return Math.floor(Number(value)); // แสดงเป็นจำนวนเต็ม
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
+
+  
   formatDateThai(date: string): string {
     const [year, month, day] = date.split('-');
     const thaiYear = parseInt(year, 10) + 543;

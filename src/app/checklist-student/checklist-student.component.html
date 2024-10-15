@@ -7,7 +7,7 @@
     <select id="subject-dropdown" name="subject_id" class="form-select" [(ngModel)]="selectedSubjectId" (change)="onSubjectChange($event)">
       <option value="" disabled selected hidden>-- กรุณาเลือกรายวิชา --</option>
       <option *ngFor="let subject of subjects" [value]="subject.subject_id">
-        {{ subject.subject_name }} ({{ subject.subject_engname }})
+        {{ subject.subject_name }} ({{ subject.subject_engname }}) - หมู่เรียนที่ : {{ subject.section }} || ภาคเรียนที่ : {{ subject.semester }} || ปีการศึกษา {{ subject.year }} 
       </option>
     </select>
   </div>

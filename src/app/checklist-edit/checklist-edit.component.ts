@@ -23,6 +23,10 @@ export class ChecklistEditComponent implements OnInit {
   ChecklistUpdate: any = {};
   subjects: any[] = [];
   teacher_id: string = '';
+  time_start: string = '';
+  time_end: string = '';
+  subject_time_start: string = '';
+  subject_time_end: string = ''; 
 
   constructor(
     private dataService: DataService, 
@@ -92,6 +96,27 @@ export class ChecklistEditComponent implements OnInit {
   }
 
   UpdateChecklist() {
+    // ตรวจสอบว่าเวลาเริ่มต้นไม่เกินเวลาสิ้นสุด
+    if (this.ChecklistUpdate.time_start >= this.ChecklistUpdate.time_end) {
+      Swal.fire({
+          title: 'เกิดข้อผิดพลาด',
+          text: 'เวลาเริ่มต้นการเช็คชื่อห้ามเกินหรือเท่ากับเวลาสิ้นสุด',
+          icon: 'error',
+          confirmButtonText: 'ตกลง'
+      });
+      return;
+    }
+
+    if (this.ChecklistUpdate.subject_time_start >= this.ChecklistUpdate.subject_time_end) {
+      Swal.fire({
+          title: 'เกิดข้อผิดพลาด',
+          text: 'เวลาเริ่มต้นวิชาห้ามเกินหรือเท่ากับเวลาสิ้นสุดวิชา',
+          icon: 'error',
+          confirmButtonText: 'ตกลง'
+      });
+      return;
+    }
+
     // Convert Date object to 'YYYY-MM-DD' format
     if (this.ChecklistUpdate.date instanceof Date) {
       this.ChecklistUpdate.date = this.formatDate(this.ChecklistUpdate.date);
@@ -131,7 +156,90 @@ export class ChecklistEditComponent implements OnInit {
         'warning'
       );
     }
-  }
+}
+
+// UpdateChecklist() {
+//   const today = new Date();
+//   today.setHours(0, 0, 0, 0); // ตั้งเวลาของวันนี้เป็น 00:00:00 เพื่อตรวจสอบเฉพาะวันที่
+
+//   // ตรวจสอบว่าไม่สามารถเลือกวันที่ย้อนหลังได้
+//   if (this.ChecklistUpdate.date instanceof Date) {
+//     // ตรวจสอบวันที่ห้ามย้อนหลัง แต่สามารถเป็นวันนี้ได้
+//     const selectedDate = new Date(this.ChecklistUpdate.date);
+//     selectedDate.setHours(0, 0, 0, 0);
+
+//     if (selectedDate < today) {
+//       Swal.fire({
+//         title: 'วันที่ไม่ถูกต้อง',
+//         text: 'ไม่สามารถเลือกวันที่ย้อนหลังได้',
+//         icon: 'error',
+//         confirmButtonText: 'ตกลง'
+//       });
+//       return;
+//     }
+//   }
+
+//   // ตรวจสอบว่าเวลาเริ่มต้นไม่เกินเวลาสิ้นสุด
+//   if (this.ChecklistUpdate.time_start >= this.ChecklistUpdate.time_end) {
+//     Swal.fire({
+//         title: 'เกิดข้อผิดพลาด',
+//         text: 'เวลาเริ่มต้นการเช็คชื่อห้ามเกินหรือเท่ากับเวลาสิ้นสุด',
+//         icon: 'error',
+//         confirmButtonText: 'ตกลง'
+//     });
+//     return;
+//   }
+
+//   if (this.ChecklistUpdate.subject_time_start >= this.ChecklistUpdate.subject_time_end) {
+//     Swal.fire({
+//         title: 'เกิดข้อผิดพลาด',
+//         text: 'เวลาเริ่มต้นวิชาห้ามเกินหรือเท่ากับเวลาสิ้นสุดวิชา',
+//         icon: 'error',
+//         confirmButtonText: 'ตกลง'
+//     });
+//     return;
+//   }
+
+//   // Convert Date object to 'YYYY-MM-DD' format
+//   if (this.ChecklistUpdate.date instanceof Date) {
+//     this.ChecklistUpdate.date = this.formatDate(this.ChecklistUpdate.date);
+//   }
+
+//   if (typeof this.ChecklistUpdate.date === 'string' && this.ChecklistUpdate.date.length === 10) {
+//     Swal.fire({
+//       title: 'กำลังบันทึกข้อมูล...',
+//       allowOutsideClick: false,
+//       didOpen: () => {
+//         Swal.showLoading();
+//       }
+//     });
+
+//     this.http.put(`${this.dataService.apiUrl}/checklist-update/${this.ChecklistUpdate.checklist_id}`, this.ChecklistUpdate).subscribe(
+//       () => {
+//         Swal.fire(
+//           'แก้ไขข้อมูลรายการเช็คชื่อสำเร็จ!',
+//           'ข้อมูลถูกแก้ไขแล้ว',
+//           'success'
+//         ).then(() => {
+//           this.router.navigate(['/checklist-manage']);
+//         });
+//       },
+//       (error) => {
+//         Swal.fire(
+//           'เกิดข้อผิดพลาด',
+//           'ไม่สามารถแก้ไขรายการได้',
+//           'error'
+//         );
+//       }
+//     );
+//   } else {
+//     Swal.fire(
+//       'วันที่ไม่ถูกต้อง',
+//       'กรุณาตรวจสอบวันที่ที่เลือก',
+//       'warning'
+//     );
+//   }
+// }
 
   private formatDate(date: Date): string {
     const year = date.getFullYear();

@@ -91,6 +91,5 @@ export class ForgetPasswordComponent {
         });
       }
     });
-    
   }
 }

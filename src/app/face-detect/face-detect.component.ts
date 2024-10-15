@@ -98,7 +98,7 @@ export class FaceDetectComponent implements AfterViewInit, OnDestroy {
           if (this.imgStdData.length === 0 || !this.imgStdData[0].extract_feature) {
             Swal.fire({
               title: 'ไม่พบข้อมูล',
-              text: 'กรุณาทำการบันทึกรูปภาพก่อนทำการตรวจสอบ',
+              text: 'กรุณาทำการบันทึกข้อมูลใบหน้าก่อนทำการตรวจสอบ',
               icon: 'warning',
               confirmButtonText: 'ตกลง'
             }).then(() => {
