@@ -17,8 +17,14 @@ import { FormsModule } from '@angular/forms';
 export class SubjectManageComponent implements OnInit {
   subjects: any[] = [];
   filteredSubjects: any[] = [];
+  paginatedSubjects: any[] = [];
   searchQuery: string = '';
+  selectedYear: string = '';
   user_id: any;
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+  totalPages: number = 0;
+  uniqueYears: string[] = [];
 
   constructor(
     private dataService: DataService,
@@ -50,11 +56,18 @@ export class SubjectManageComponent implements OnInit {
       (data: any) => {
         this.subjects = data;
         this.filteredSubjects = data; // Initialize filteredSubjects
+        this.extractUniqueYears();
+        this.updatePagination();
       },
       (error) => {
         console.error('เกิดข้อผิดพลาดในการดึงข้อมูลรายวิชา:', error);
       }
     );
+  }
+
+  extractUniqueYears() {
+    const yearsSet = new Set(this.subjects.map(subject => subject.year));
+    this.uniqueYears = Array.from(yearsSet);
   }
 
   deleteSubject(subject_id: number) {
@@ -70,7 +83,7 @@ export class SubjectManageComponent implements OnInit {
         this.http.delete(`${this.dataService.apiUrl}/subject-delete/${subject_id}`).subscribe(
           () => {
             this.loadSubject();
-            Swal.fire('ลบสำเร็จ!', 'รายวิชาถูกลบแล้ว.', 'success');
+            Swal.fire('ลบรายวิชาสำเร็จ!', 'success');
           },
           (error) => {
             console.error('เกิดข้อผิดพลาดในการลบรายวิชา:', error);
@@ -84,17 +97,44 @@ export class SubjectManageComponent implements OnInit {
     this.route.navigate(['/subject-update', subject.subject_id]);
   }
 
-  filterSubjects() {
-    const query = this.searchQuery.toLowerCase();
-    this.filteredSubjects = this.subjects.filter(subject =>
-      subject.subject_name.toLowerCase().includes(query) ||
-      String(subject.id_subject).toLowerCase().includes(query) // Ensure id_subject is a string
-    );
+filterSubjects() {
+  const query = this.searchQuery.toLowerCase();
+  this.filteredSubjects = this.subjects.filter(subject =>
+    (subject.subject_name.toLowerCase().includes(query) || 
+     subject.subject_engname.toLowerCase().includes(query) || 
+     String(subject.id_subject).toLowerCase().includes(query)) // รวมการค้นหาผ่าน subject_engname
+  );
+  this.updatePagination();
+}
+
+  
+
+  formatTime(time: string): string {
+    const [hours, minutes] = time.split(':');
+    return `${hours}:${minutes}`;
   }
 
   resetSearch() {
     this.searchQuery = '';
-    this.filterSubjects(); // Reapply the filter with cleared search fields
+    this.selectedYear = '';
+    this.filteredSubjects = this.subjects; // Reinitialize filteredSubjects
+    this.updatePagination(); // Update pagination after reset
   }
-  
+
+  // Pagination Logic
+  updatePagination() {
+    this.totalPages = Math.ceil(this.filteredSubjects.length / this.itemsPerPage);
+    this.changePage(this.currentPage); // Reset to current page
+  }
+
+  changePage(page: number) {
+    if (page < 1 || page > this.totalPages) return; // Prevent out-of-bounds
+    this.currentPage = page;
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    this.paginatedSubjects = this.filteredSubjects.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  get pages() {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
 }

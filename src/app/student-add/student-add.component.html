@@ -36,21 +36,23 @@
             <div class="mb-3">
               <label for="fullname" class="form-label">ชื่อ :</label>
               <input type="text" class="form-control" id="fullname" name="firstname" placeholder="ระบุชื่อ" 
-                     [(ngModel)]="fname" required 
-                     pattern="^[ก-ฮa-zA-Z\s]+$" 
-                     [ngClass]="{'is-invalid': addStudentForm.controls['firstname']?.invalid && (addStudentForm.controls['firstname']?.touched || addStudentForm.submitted)}">
+              [(ngModel)]="fname" required 
+              pattern="^[ก-๙เ-์a-zA-Z\s]+$"
+              [ngClass]="{'is-invalid': addStudentForm.controls['firstname']?.invalid && (addStudentForm.controls['firstname']?.touched || addStudentForm.submitted)}">
               <div *ngIf="addStudentForm.controls['firstname']?.invalid && (addStudentForm.controls['firstname']?.touched || addStudentForm.submitted)" class="invalid-feedback">
                 กรุณากรอกชื่อ (ภาษาไทยหรืออังกฤษเท่านั้น)
               </div>
+       
+       
             </div>
 
             <!-- Last Name Field -->
             <div class="mb-3">
               <label for="lastname" class="form-label">สกุล :</label>
               <input type="text" class="form-control" id="lastname" name="lastname" placeholder="ระบุสกุล" 
-                     [(ngModel)]="lname" required 
-                     pattern="^[ก-ฮa-zA-Z\s]+$" 
-                     [ngClass]="{'is-invalid': addStudentForm.controls['lastname']?.invalid && (addStudentForm.controls['lastname']?.touched || addStudentForm.submitted)}">
+              [(ngModel)]="lname" required 
+              pattern="^[ก-๙เ-์a-zA-Z\s]+$"
+              [ngClass]="{'is-invalid': addStudentForm.controls['lastname']?.invalid && (addStudentForm.controls['lastname']?.touched || addStudentForm.submitted)}">
               <div *ngIf="addStudentForm.controls['lastname']?.invalid && (addStudentForm.controls['lastname']?.touched || addStudentForm.submitted)" class="invalid-feedback">
                 กรุณากรอกสกุล (ภาษาไทยหรืออังกฤษเท่านั้น)
               </div>

@@ -23,7 +23,6 @@ export class LoginComponent {
       (response: any) => {
         Swal.fire({
           title: 'เข้าสู่ระบบสำเร็จ!',
-          text: 'คุณได้ทำการเข้าสู่ระบบสำเร็จ',
           icon: 'success',
           confirmButtonText: 'ตกลง',
         }).then(() => {

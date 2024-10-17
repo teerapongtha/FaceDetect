@@ -78,8 +78,7 @@ export class RecognitionManageComponent implements OnInit {
           .subscribe(
             () => {
               Swal.fire(
-                'ลบเรียบร้อย!',
-                'รูปภาพถูกลบแล้ว',
+                'ลบรูปภาพเรียบร้อยแล้ว!',
                 'success'
               ).then(() => {
                 this.fetchUserData();
@@ -115,8 +114,7 @@ export class RecognitionManageComponent implements OnInit {
           .subscribe(
             () => {
               Swal.fire(
-                'ลบเรียบร้อย!',
-                'รูปภาพทั้งหมดถูกลบแล้ว',
+                'ลบรูปภาพทั้งหมดเรียบร้อยแล้ว!',
                 'success'
               ).then(() => {
                 this.fetchUserData();

@@ -36,7 +36,7 @@
           </li>
           <li *ngIf="userData && userData.role === 'student'">
             <a class="nav-link text-white" routerLink="/recognition-manage" (click)="closeMenu()">
-              <i class="fas fa-camera-retro"></i> การรู้จำใบหน้า
+              <i class="fas fa-camera-retro"></i> จัดการข้อมูลใบหน้า
             </a>
           </li>
           <li *ngIf="userData && userData.role === 'teacher'">
@@ -59,16 +59,16 @@
               <i class="fas fa-print"></i> รายงานผลการเข้าเรียน
             </a>
           </li>
-          <li class="nav-item" *ngIf="userData">
+          <!-- <li class="nav-item" *ngIf="userData">
             <a class="nav-link text-white" routerLink="/profile" (click)="closeMenu()">
               <i class="fas fa-user"></i> ข้อมูลส่วนตัว
             </a>
-          </li>
-          <!-- <li class="nav-item" *ngIf="userData">
+          </li> -->
+          <li class="nav-item" *ngIf="userData">
             <a class="nav-link text-white" routerLink="/profile" (click)="closeMenu()">
               <i class="fas fa-user"></i> {{ userData.title }} {{ userData.fname }} {{ userData.lname }}
             </a>
-          </li>    -->
+          </li>   
           <li class="nav-item" *ngIf="userData">
             <a class="nav-link text-white" (click)="logout()" style="cursor: pointer;">
               <i class="fas fa-sign-out-alt"></i> ออกจากระบบ

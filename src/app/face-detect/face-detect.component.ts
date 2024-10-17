@@ -136,8 +136,8 @@ export class FaceDetectComponent implements AfterViewInit, OnDestroy {
     const canvas = this.canvasElement.nativeElement;
 
     const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-      .withFaceLandmarks()
-      .withFaceDescriptors();
+        .withFaceLandmarks()
+        .withFaceDescriptors();
 
     const resizedDetections = faceapi.resizeResults(detections, faceapi.matchDimensions(canvas, { width: video.width, height: video.height }));
     const faceDescriptor = resizedDetections.length > 0 ? resizedDetections[0].descriptor : null;
@@ -145,42 +145,57 @@ export class FaceDetectComponent implements AfterViewInit, OnDestroy {
     let verificationResult;
 
     if (faceDescriptor) {
-      const matchingUser = this.findMatchingUser(faceDescriptor);
-      if (matchingUser) {
-        const userData = matchingUser.userData;
-        const distance = matchingUser.distance;
-        const fname = userData?.fname ?? 'ไม่พบชื่อ';
-        const lname = userData?.lname ?? 'ไม่พบนามสกุล';
+        const matchingUser = this.findMatchingUser(faceDescriptor);
+        if (matchingUser) {
+            const userData = matchingUser.userData;
+            const distance = matchingUser.distance;
+            const fname = userData?.fname;
+            const lname = userData?.lname;
 
-        verificationResult = {
-          fname,
-          lname,
-          distance: distance.toFixed(2),
-          match: true
-        };
-      } else {
-        verificationResult = { fname: 'ไม่พบชื่อ', lname: 'ไม่พบนามสกุล', distance: 'N/A', match: false };
-      }
+            verificationResult = {
+                fname,
+                lname,
+                distance: distance.toFixed(2),
+                match: true
+            };
+        } else {
+            verificationResult = { match: false };
+        }
     } else {
-      verificationResult = { fname: 'ไม่พบชื่อ', lname: 'ไม่พบนามสกุล', distance: 'N/A', match: false };
+        verificationResult = { match: false };
     }
 
-    Swal.fire({
-      title: 'ผลการตรวจสอบ',
-      html: `
-        <p><strong>ชื่อ:</strong> ${verificationResult.fname} ${verificationResult.lname}</p>
-        <p><strong>ระยะทาง:</strong> ${verificationResult.distance}</p>
-        <p><strong>ผลลัพธ์:</strong> ${verificationResult.match ? 'ใบหน้าตรง' : 'ใบหน้าไม่ตรง'}</p>
-      `,
-      icon: verificationResult.match ? 'success' : 'error',
-      confirmButtonText: 'ตกลง'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.stopVideo();
-        this.router.navigate(['/recognition-manage']);
-      }
-    });
-  }
+    if (verificationResult.match) {
+        Swal.fire({
+            title: 'ผลการตรวจสอบใบหน้า',
+            html: `
+                <p><strong>ชื่อ:</strong> ${verificationResult.fname} ${verificationResult.lname}</p>
+                <p><strong>ค่าความเหมือน:</strong> ${verificationResult.distance}</p>
+                <p><strong>ผลลัพธ์:</strong> ใบหน้าตรงกับฐานข้อมูล</p>      
+            `,
+            icon: 'success',
+            confirmButtonText: 'ตกลง'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.stopVideo();
+                this.router.navigate(['/recognition-manage']);
+            }
+        });
+    } else {
+        Swal.fire({
+            title: 'ผลการตรวจสอบใบหน้า',
+            text: 'ใบหน้าที่ตรวจสอบไม่ตรงกัน',
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.stopVideo();
+                this.router.navigate(['/recognition-manage']);
+            }
+        });
+    }
+}
+
 
   stopVideo() {
     const video = this.videoElement.nativeElement;

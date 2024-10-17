@@ -31,7 +31,7 @@
               <label for="fullname" class="form-label fs-5">ชื่อ :</label>
               <input type="text" class="form-control" id="fullname" name="fname" [(ngModel)]="ProfileUpdate.fname" placeholder="ระบุชื่อ" required
                      [ngClass]="{'is-invalid': editForm.controls['fname']?.invalid && (editForm.controls['fname']?.touched || editForm.submitted)}"
-                     pattern="^[ก-๙a-zA-Z\s]+$">
+                     pattern="^[ก-๙เ-์a-zA-Z\s]+$">
               <div *ngIf="editForm.controls['fname']?.invalid && (editForm.controls['fname']?.touched || editForm.submitted)" class="invalid-feedback">
                 กรุณากรอกชื่อเป็นภาษาไทยหรืออังกฤษเท่านั้น
               </div>
@@ -41,7 +41,7 @@
               <label for="lastname" class="form-label fs-5">สกุล :</label>
               <input type="text" class="form-control" id="lastname" name="lname" [(ngModel)]="ProfileUpdate.lname" placeholder="ระบุสกุล" required
                      [ngClass]="{'is-invalid': editForm.controls['lname']?.invalid && (editForm.controls['lname']?.touched || editForm.submitted)}"
-                     pattern="^[ก-๙a-zA-Z\s]+$">
+                     pattern="^[ก-๙เ-์a-zA-Z\s]+$">
               <div *ngIf="editForm.controls['lname']?.invalid && (editForm.controls['lname']?.touched || editForm.submitted)" class="invalid-feedback">
                 กรุณากรอกสกุลเป็นภาษาไทยหรืออังกฤษเท่านั้น
               </div>

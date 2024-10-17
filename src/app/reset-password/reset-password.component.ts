@@ -54,7 +54,7 @@ export class ResetPasswordComponent {
         this.successMessage = 'รีเซ็ตรหัสผ่านสำเร็จ';
         Swal.fire({
           icon: 'success',
-          title: 'สำเร็จ',
+          title: 'แก้ไขรหัสผ่านสำเร็จ',
           text: this.successMessage,
           confirmButtonText: 'ตกลง',
           customClass: {

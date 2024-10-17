@@ -22,7 +22,7 @@
               <label for="subject_name" class="form-label">ชื่อวิชา :</label>
               <input type="text" class="form-control" id="subject_name" name="subject_name"
                 placeholder="ระบุชื่อวิชา" [(ngModel)]="SubjectUpdate.subject_name" required
-                pattern="^[ก-ฮ0-9\s]+$"
+                pattern="^[ก-๙เ-์a-zA-Z\s]+$"
                 [ngClass]="{'is-invalid': editForm.controls['subject_name']?.invalid && editForm.controls['subject_name']?.touched}">
               <div class="invalid-feedback">กรุณาใส่ชื่อวิชาเป็นภาษาไทยเท่านั้น</div>
             </div>

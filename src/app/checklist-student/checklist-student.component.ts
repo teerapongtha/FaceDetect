@@ -182,59 +182,63 @@ export class ChecklistStudentComponent implements OnInit {
     const currentDate = new Date();
     const checklistDate = new Date(checklist.date);
     const subjectTimes = this.subjectTimes[checklist.checklist_id] || {}; // ดึงเวลาเช็คชื่อ
-  
+
     // ตรวจสอบว่าเป็นวันที่เช็คชื่อหรือไม่
     if (currentDate.toDateString() !== checklistDate.toDateString()) {
-      // ถ้าวันที่ปัจจุบันยังไม่ถึงวันที่ของการเช็คชื่อ
-      if (currentDate < checklistDate) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'ไม่สามารถเช็คชื่อได้',
-          text: 'ยังไม่ถึงวันที่เช็คชื่อ'
-        });
-        return;
-      } else {
-        // ถ้าวันที่ปัจจุบันเลยวันที่ของรายการเช็คชื่อ
-        Swal.fire({
-          icon: 'warning',
-          title: 'ไม่สามารถเช็คชื่อได้',
-          text: 'วันที่เช็คชื่อได้ผ่านมาแล้ว คุณจะถูกบันทึกเป็นขาดเรียน'
-        }).then(() => {
-          this.recordAttendance(checklist.checklist_id, 'ขาดเรียน'); // บันทึกเป็น "ขาดเรียน"
-        });
-        return;
-      }
+        // ถ้าวันที่ปัจจุบันยังไม่ถึงวันที่ของการเช็คชื่อ
+        if (currentDate < checklistDate) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'ไม่สามารถเช็คชื่อได้',
+                text: 'ยังไม่ถึงวันที่เช็คชื่อ'
+            });
+            return;
+        } else {
+            // ถ้าวันที่ปัจจุบันเลยวันที่ของรายการเช็คชื่อ
+            Swal.fire({
+                icon: 'warning',
+                title: 'ไม่สามารถเช็คชื่อได้',
+                text: 'วันที่เช็คชื่อได้ผ่านมาแล้ว คุณจะถูกบันทึกเป็นขาดเรียน'
+            }).then(() => {
+                this.recordAttendance(checklist.checklist_id, 'ขาดเรียน'); // บันทึกเป็น "ขาดเรียน"
+            });
+            return;
+        }
     } else {
-      const currentTimeStr = currentDate.toLocaleTimeString('th-TH', { hour12: false });
-      const timeStart = subjectTimes.time_start;
-      const timeEnd = subjectTimes.time_end;
-  
-      // ถ้าวันที่ปัจจุบันคือวันที่เดียวกันกับวันที่ของการเช็คชื่อแต่ยังไม่ถึงเวลา
-      if (currentTimeStr < timeStart) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'ไม่สามารถเช็คชื่อได้',
-          text: 'ยังไม่ถึงเวลาเช็คชื่อ'
-        });
-        return;
-      }
-  
-      // ถ้าวันที่ปัจจุบันคือวันที่เดียวกันกับวันที่ของการเช็คชื่อแต่เลยเวลา
-      if (currentTimeStr > timeEnd) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'ไม่สามารถเช็คชื่อได้',
-          text: 'คุณจะถูกบันทึกเป็นขาดเรียน'
-        }).then(() => {
-          this.recordAttendance(checklist.checklist_id, 'ขาดเรียน'); // บันทึกเป็น "ขาดเรียน"
-        });
-        return;
-      }
-  
-      // หากอยู่ในช่วงเวลาที่เช็คชื่อได้ ให้ไปที่หน้าสำหรับเช็คชื่อ
-      this.route.navigate(['/checklist-attendance', checklist.checklist_id, { std_id }]);
+        const currentTime = currentDate.getTime();
+        const timeStart = new Date(`${checklist.date}T${subjectTimes.time_start}`);
+        
+        // เพิ่มเวลา 30 นาทีหลังเวลาเริ่มต้น
+        const thirtyMinutesLater = new Date(timeStart.getTime() + 30 * 60 * 1000);
+
+        // ถ้าวันที่ปัจจุบันคือวันที่เดียวกันกับวันที่ของการเช็คชื่อแต่ยังไม่ถึงเวลา
+        if (currentDate < timeStart) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'ไม่สามารถเช็คชื่อได้',
+                text: 'ยังไม่ถึงเวลาเช็คชื่อ'
+            });
+            return;
+        }
+
+        // ถ้าวันที่ปัจจุบันเลยเวลาเริ่มต้นไปแล้ว 30 นาที
+        if (currentTime > thirtyMinutesLater.getTime()) { // เปลี่ยนที่นี่
+            Swal.fire({
+                icon: 'warning',
+                title: 'ไม่สามารถเช็คชื่อได้',
+                text: 'คุณจะถูกบันทึกเป็นขาดเรียน'
+            }).then(() => {
+                this.recordAttendance(checklist.checklist_id, 'ขาดเรียน'); // บันทึกเป็น "ขาดเรียน"
+            });
+            return;
+        }
+
+        // หากอยู่ในช่วงเวลาที่เช็คชื่อได้ ให้ไปที่หน้าสำหรับเช็คชื่อ
+        this.route.navigate(['/checklist-attendance', checklist.checklist_id, { std_id }]);
     }
-  }
+}
+
+
   
 
 
@@ -281,4 +285,8 @@ export class ChecklistStudentComponent implements OnInit {
     });
   }
   
+  formatTime(time: string): string {
+    const [hours, minutes] = time.split(':');
+    return `${hours}:${minutes}`;
+  }
 }

@@ -43,10 +43,10 @@
             <h5 class="mb-2">{{ checklist.title }}</h5>
             <p><strong>วิชา:</strong> {{ getSubjectName(checklist.subject_id) }}</p>
             <p><strong>รายละเอียด:</strong> {{ checklist.detail }}</p>
-            <p><strong>เวลาเริ่มต้น-สิ้นสุดเช็คชื่อ:</strong> {{ checklist.time_start }} - {{ checklist.time_end }}</p>
-            <p><strong>เวลาเริ่มต้น-สิ้นสุดการสอน:</strong> {{ checklist.subject_time_start }} - {{ checklist.subject_time_end }}</p>
+            <p class="mb-1"><strong>เวลาเริ่มต้น-สิ้นสุดเช็คชื่อ:</strong> {{ formatTime(checklist.time_start) }} - {{ formatTime(checklist.time_end) }} น.</p>
+            <p class="mb-1"><strong>เวลาเริ่มต้น-สิ้นสุดการสอน:</strong> {{ formatTime(checklist.subject_time_start) }} - {{ formatTime(checklist.subject_time_end) }} น.</p>     
             <p><strong>วันที่เช็คชื่อ:</strong> {{ formatDateThai(checklist.date) }}</p><br>
-            <p><strong>วันที่ปัจจุบัน:</strong> {{ getCurrentDateThai() }} เวลา: {{ currentTime | date: 'HH:mm:ss' }}</p>
+            <p><strong>วันที่ปัจจุบัน:</strong> {{ getCurrentDateThai() }} เวลา: {{ currentTime | date: 'HH:mm:ss' }} น.</p>
           </div>
           <div class="mt-auto text-end">
             <p *ngIf="checklist.status === 'มาเรียน'" class="text-success"><strong>สถานะ: มาเรียน</strong></p>

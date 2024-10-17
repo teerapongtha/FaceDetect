@@ -44,7 +44,7 @@ export class ProfileEditIMGComponent {
       (response) => {
         this.isLoading = false;
         if (response.success) {
-          Swal.fire('สำเร็จ!', 'แก้ไขรูปภาพโปรไฟล์สำเร็จ.', 'success');
+          Swal.fire('แก้ไขรูปภาพโปรไฟล์สำเร็จ.', 'success');
           this.router.navigate(['/profile']);
         } else {
           Swal.fire('เกิดข้อผิดพลาด!', 'ไม่สามารถอัปโหลดรูปโปรไฟล์ได้.', 'error');

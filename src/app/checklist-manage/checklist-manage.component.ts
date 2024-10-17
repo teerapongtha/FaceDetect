@@ -109,7 +109,7 @@ export class ChecklistManageComponent implements OnInit {
             this.http.delete(this.dataService.apiUrl + `/checklist-delete/${checklist_id}`).subscribe(
                 () => {
                     this.loadChecklist();
-                    Swal.fire('ลบรายการสำเร็จ!', 'รายการถูกลบแล้ว', 'success');
+                    Swal.fire('ลบรายการเช็คชื่อสำเร็จ!', 'success');
                 },
                 (error) => {
                     if (error.status === 403) {
@@ -166,4 +166,10 @@ export class ChecklistManageComponent implements OnInit {
     this.searchDate = '';
     this.filterChecklists();
   }
+
+  formatTime(time: string): string {
+    const [hours, minutes] = time.split(':');
+    return `${hours}:${minutes}`;
+  }
+  
 }

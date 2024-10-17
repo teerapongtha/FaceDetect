@@ -14,7 +14,6 @@ import { StudentManageComponent } from './student-manage/student-manage.componen
 import { StudentImportComponent } from './student-import/student-import.component';
 import { StudentAddComponent } from './student-add/student-add.component';
 import { ReportPersonalComponent } from './report-personal/report-personal.component';
-import { ReportWeekComponent } from './report-week/report-week.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileEditComponent } from './profile-edit/profile-edit.component';
@@ -34,6 +33,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { ReportPersonalDetailComponent } from './report-personal-detail/report-personal-detail.component';
 import { ReportStudentComponent } from './report-student/report-student.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 export const MY_FORMATS = {
   parse: {
@@ -74,7 +74,6 @@ export const MY_FORMATS = {
     ReportComponent,
     ReportPersonalComponent,
     ReportPersonalDetailComponent,
-    ReportWeekComponent,
     ReportStudentComponent,
     ForgetPasswordComponent,
     ProfileComponent,
@@ -82,6 +81,7 @@ export const MY_FORMATS = {
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
+    MatFormFieldModule,
     MatSelectModule,
     NgxMaterialTimepickerModule,
   ],

@@ -49,7 +49,6 @@ export class SubjectEditComponent implements OnInit {
     this.http.put(this.dataService.apiUrl + `/subject-update/${this.SubjectUpdate.subject_id}`, this.SubjectUpdate).subscribe(() => {
       Swal.fire(
         'แก้ไขข้อมูลรายวิชาสำเร็จ!',
-        'ข้อมูลถูกแก้ไขแล้ว',
         'success'
       );
       this.router.navigate(['/subject-manage']);

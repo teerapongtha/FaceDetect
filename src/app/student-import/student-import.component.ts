@@ -45,7 +45,7 @@ export class StudentImportComponent {
             const emailRequests = response.imported_data.map((student: any) => this.sendEmail(student));
             Promise.all(emailRequests).then(() => {
               this.isLoading = false; // ซ่อนการโหลด
-              Swal.fire('สำเร็จ', 'นำเข้าข้อมูลและส่งอีเมลสำเร็จ!', 'success').then(() => {
+              Swal.fire('นำเข้าข้อมูลและส่งอีเมลสำเร็จ!', 'success').then(() => {
                 this.router.navigate(['/student-manage']);
               });
             }).catch(() => {

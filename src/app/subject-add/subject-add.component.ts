@@ -37,7 +37,6 @@ export class SubjectAddComponent implements OnInit {
     this.data.getUserData().subscribe(
       (userData) => {
         if (userData && userData.title && userData.fname && userData.lname && userData.teacher_id) {
-          this.teacher_name = `${userData.title} ${userData.fname} ${userData.lname}`;
           this.teacher_id = userData.teacher_id; 
         } else {
           console.error('Teacher information not available');
@@ -77,7 +76,6 @@ export class SubjectAddComponent implements OnInit {
       (response) => {
         Swal.fire({
           title: 'เพิ่มรายวิชาใหม่สำเร็จ',
-          text: 'บันทึกข้อมูลสำเร็จ',
           icon: 'success',
           confirmButtonText: 'ตกลง'
         }).then((result) => {

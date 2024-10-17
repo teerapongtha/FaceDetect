@@ -135,193 +135,119 @@ export class ReportStudentComponent implements OnInit {
 
   updateChart() {
     if (!this.chartCanvas?.nativeElement) {
-      console.error('Chart canvas element is not available.');
-      return;
+        console.error('Chart canvas element is not available.');
+        return;
     }
-  
+
     if (this.chart) {
-      this.chart.destroy(); // Destroy the previous chart instance
+        this.chart.destroy(); // Destroy the previous chart instance
     }
-  
+
     // Aggregate data by month and status with dates
     const monthsData: { [key: string]: { present: string[], late: string[], absent: string[] } } = this.filteredAttendanceRecords.reduce((acc, record) => {
-      const date = new Date(record.date);
-      const monthKey = `${date.getFullYear()}-${date.getMonth() + 1}`; // Format as YYYY-MM
-  
-      if (!acc[monthKey]) {
-        acc[monthKey] = { present: [], late: [], absent: [] };
-      }
-  
-      if (record.status === 'มาเรียน') {
-        acc[monthKey].present.push(record.date);
-      } else if (record.status === 'มาสาย') {
-        acc[monthKey].late.push(record.date);
-      } else if (record.status === 'ขาดเรียน') {
-        acc[monthKey].absent.push(record.date);
-      }
-  
-      return acc;
+        const date = new Date(record.date);
+        const monthKey = `${date.getFullYear()}-${date.getMonth() + 1}`; // Format as YYYY-MM
+
+        if (!acc[monthKey]) {
+            acc[monthKey] = { present: [], late: [], absent: [] };
+        }
+
+        if (record.status === 'มาเรียน') {
+            acc[monthKey].present.push(record.date);
+        } else if (record.status === 'มาสาย') {
+            acc[monthKey].late.push(record.date);
+        } else if (record.status === 'ขาดเรียน') {
+            acc[monthKey].absent.push(record.date);
+        }
+
+        return acc;
     }, {} as { [key: string]: { present: string[], late: string[], absent: string[] } });
-  
+
     const months = Object.keys(monthsData);
     const presentCounts = months.map(month => monthsData[month].present.length);
     const absentCounts = months.map(month => monthsData[month].absent.length);
     const lateCounts = months.map(month => monthsData[month].late.length);
-  
+
     this.chart = new Chart(this.chartCanvas.nativeElement, {
-      type: 'bar',
-      data: {
-        labels: months.map(month => this.formatMonthThai(month)),
-        datasets: [
-          {
-            label: 'จำนวนที่มาเรียน',
-            data: presentCounts,
-            backgroundColor: '#28a745',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-          },
-          {
-            label: 'จำนวนที่ขาดเรียน',
-            data: absentCounts,
-            backgroundColor: '#dc3545',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-          },
-          {
-            label: 'จำนวนที่มาสาย',
-            data: lateCounts,
-            backgroundColor: '#ffc107',
-            borderColor: 'rgba(255, 206, 86, 1)',
-            borderWidth: 1
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          tooltip: {
-            callbacks: {
-              label: (context) => {
-                const month = months[context.dataIndex];
-                const data = monthsData[month];
-                const status = context.dataset.label;
-  
-                let info = `เดือน: ${this.formatMonthThai(month)}`;
-                if (status === 'จำนวนที่มาเรียน') {
-                  info += ` - มาเรียน: ${data.present.length} วัน: ${data.present.map(date => this.formatDateThai(date)).join(', ')}`;
-                } else if (status === 'จำนวนที่ขาดเรียน') {
-                  info += ` - ขาดเรียน: ${data.absent.length} วัน: ${data.absent.map(date => this.formatDateThai(date)).join(', ')}`;
-                } else if (status === 'จำนวนที่มาสาย') {
-                  info += ` - มาสาย: ${data.late.length} วัน: ${data.late.map(date => this.formatDateThai(date)).join(', ')}`;
+        type: 'bar',
+        data: {
+            labels: months.map(month => this.formatMonthThai(month)),
+            datasets: [
+                {
+                    label: 'จำนวนที่มาเรียน',
+                    data: presentCounts,
+                    backgroundColor: '#28a745',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'จำนวนที่ขาดเรียน',
+                    data: absentCounts,
+                    backgroundColor: '#dc3545',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'จำนวนที่มาสาย',
+                    data: lateCounts,
+                    backgroundColor: '#ffc107',
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    borderWidth: 1
                 }
-                return info;
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: (context) => {
+                            const month = months[context.dataIndex];
+                            const data = monthsData[month];
+                            const status = context.dataset.label;
+
+                            let info = `เดือน: ${this.formatMonthThai(month)}`;
+                            if (status === 'จำนวนที่มาเรียน') {
+                                info += ` - มาเรียน: ${data.present.length} วัน: ${data.present.map(date => this.formatDateThai(date)).join(', ')}`;
+                            } else if (status === 'จำนวนที่ขาดเรียน') {
+                                info += ` - ขาดเรียน: ${data.absent.length} วัน: ${data.absent.map(date => this.formatDateThai(date)).join(', ')}`;
+                            } else if (status === 'จำนวนที่มาสาย') {
+                                info += ` - มาสาย: ${data.late.length} วัน: ${data.late.map(date => this.formatDateThai(date)).join(', ')}`;
+                            }
+                            return info;
+                        }
+                    }
+                }
+            },
+            scales: {
+              y: {
+                title: {
+                  display: true,
+                  text: 'จำนวน (วัน)', // Y axis label
+                  font: {
+                    size: 16,
+                  },
+                },
+                ticks: {
+                  stepSize: 1,
+                  callback: function(value) {
+                    return Math.floor(Number(value));
+                  }
+                }
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: 'สถานะ',
+                  font: {
+                    size: 16,
+                  },
+                }
               }
             }
-          }
         }
-      }
     });
-  }
-
-//   updateChart() {
-//     if (!this.chartCanvas?.nativeElement) {
-//         console.error('Chart canvas element is not available.');
-//         return;
-//     }
-
-//     if (this.chart) {
-//         this.chart.destroy(); // Destroy the previous chart instance
-//     }
-
-//     // Aggregate data by month and status with dates
-//     const monthsData: { [key: string]: { present: string[], late: string[], absent: string[] } } = this.filteredAttendanceRecords.reduce((acc, record) => {
-//         const date = new Date(record.date);
-//         const monthKey = `${date.getFullYear()}-${date.getMonth() + 1}`; // Format as YYYY-MM
-
-//         if (!acc[monthKey]) {
-//             acc[monthKey] = { present: [], late: [], absent: [] };
-//         }
-
-//         if (record.status === 'มาเรียน') {
-//             acc[monthKey].present.push(record.date);
-//         } else if (record.status === 'มาสาย') {
-//             acc[monthKey].late.push(record.date);
-//         } else if (record.status === 'ขาดเรียน') {
-//             acc[monthKey].absent.push(record.date);
-//         }
-
-//         return acc;
-//     }, {} as { [key: string]: { present: string[], late: string[], absent: string[] } });
-
-//     const months = Object.keys(monthsData);
-//     const presentCounts = months.map(month => monthsData[month].present.length);
-//     const absentCounts = months.map(month => monthsData[month].absent.length);
-//     const lateCounts = months.map(month => monthsData[month].late.length);
-
-//     this.chart = new Chart(this.chartCanvas.nativeElement, {
-//         type: 'bar',
-//         data: {
-//             labels: months.map(month => this.formatMonthThai(month)),
-//             datasets: [
-//                 {
-//                     label: 'จำนวนที่มาเรียน',
-//                     data: presentCounts,
-//                     backgroundColor: '#28a745',
-//                     borderColor: 'rgba(54, 162, 235, 1)',
-//                     borderWidth: 1
-//                 },
-//                 {
-//                     label: 'จำนวนที่ขาดเรียน',
-//                     data: absentCounts,
-//                     backgroundColor: '#dc3545',
-//                     borderColor: 'rgba(255, 99, 132, 1)',
-//                     borderWidth: 1
-//                 },
-//                 {
-//                     label: 'จำนวนที่มาสาย',
-//                     data: lateCounts,
-//                     backgroundColor: '#ffc107',
-//                     borderColor: 'rgba(255, 206, 86, 1)',
-//                     borderWidth: 1
-//                 }
-//             ]
-//         },
-//         options: {
-//             responsive: true,
-//             plugins: {
-//                 tooltip: {
-//                     callbacks: {
-//                         label: (context) => {
-//                             const month = months[context.dataIndex];
-//                             const data = monthsData[month];
-//                             const status = context.dataset.label;
-
-//                             let info = `เดือน: ${this.formatMonthThai(month)}`;
-//                             if (status === 'จำนวนที่มาเรียน') {
-//                                 info += ` - มาเรียน: ${data.present.length} วัน: ${data.present.map(date => this.formatDateThai(date)).join(', ')}`;
-//                             } else if (status === 'จำนวนที่ขาดเรียน') {
-//                                 info += ` - ขาดเรียน: ${data.absent.length} วัน: ${data.absent.map(date => this.formatDateThai(date)).join(', ')}`;
-//                             } else if (status === 'จำนวนที่มาสาย') {
-//                                 info += ` - มาสาย: ${data.late.length} วัน: ${data.late.map(date => this.formatDateThai(date)).join(', ')}`;
-//                             }
-//                             return info;
-//                         }
-//                     }
-//                 }
-//             },
-//             scales: {
-//                 y: {
-//                     ticks: {
-//                         stepSize: 1, // กำหนดให้ค่าบนแกน Y แสดงทีละ 1
-//                         callback: (value) => {
-//                             return Math.floor(Number(value)); // แสดงเป็นจำนวนเต็ม
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-//     });
-// }
+}
 
   formatMonthThai(month: string): string {
     const [year, monthNum] = month.split('-');

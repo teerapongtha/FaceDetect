@@ -40,7 +40,6 @@ export class ProfileEditComponent implements OnInit {
       this.http.put(this.dataService.apiUrl + `/profile-edit/${this.ProfileUpdate.userId}`, this.ProfileUpdate).subscribe(() => {
         Swal.fire(
           'แก้ไขข้อมูลสำเร็จ!',
-          'ข้อมูลถูกแก้ไขแล้ว',
           'success'
         );
         this.router.navigate(['/profile']);

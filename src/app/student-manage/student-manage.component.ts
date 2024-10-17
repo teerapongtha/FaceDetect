@@ -141,7 +141,7 @@ export class StudentManageComponent implements OnInit {
         if (result.isConfirmed) {
             this.http.delete(`${this.dataService.apiUrl}/student-delete/${studentId}/${this.selectedSubjectId}`).subscribe(
                 () => {
-                    Swal.fire('ลบสำเร็จ!', 'ข้อมูลนิสิตถูกลบเรียบร้อยแล้ว.', 'success');
+                    Swal.fire('ลบข้อมูลนิสิตสำเร็จแล้ว!', 'success');
                     this.loadData(); // Reload the data to refresh the view
                 },
                 (error) => {

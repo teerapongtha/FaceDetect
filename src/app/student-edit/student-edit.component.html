@@ -29,7 +29,7 @@
   <label for="fullname" class="form-label">ชื่อ :</label>
   <input type="text" class="form-control" id="fullname" name="firstname" placeholder="ระบุชื่อที่ต้องการแก้ไข..." [(ngModel)]="StudentUpdate.fname"
          [ngClass]="{'is-invalid': editForm.controls['firstname']?.invalid && (editForm.controls['firstname']?.touched || editForm.submitted)}"
-         pattern="^[ก-๙a-zA-Z\s]+$">
+         pattern="^[ก-๙เ-์a-zA-Z\s]+$">
 </div>
 
 <!-- Last Name Field -->
@@ -37,7 +37,7 @@
   <label for="lastname" class="form-label">สกุล :</label>
   <input type="text" class="form-control" id="lastname" name="lastname" placeholder="ระบุสกุลที่ต้องการแก้ไข..." [(ngModel)]="StudentUpdate.lname"
          [ngClass]="{'is-invalid': editForm.controls['lastname']?.invalid && (editForm.controls['lastname']?.touched || editForm.submitted)}"
-         pattern="^[ก-๙a-zA-Z\s]+$">
+         pattern="^[ก-๙เ-์a-zA-Z\s]+$">
 </div>
 
 <!-- Email Field -->

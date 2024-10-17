@@ -29,7 +29,7 @@ export class FaceRecognitionComponent implements AfterViewInit, OnDestroy {
   async ngAfterViewInit() {
     Swal.fire({
       title: 'กำลังโหลด...',
-      text: 'กรุณารอสักครู่ กำลังเตรียมการรู้จำใบหน้า',
+      text: 'กรุณารอสักครู่ กำลังเตรียมการเพิ่มรูปภาพใบหน้า',
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading(); // Show loading screen
@@ -162,8 +162,7 @@ export class FaceRecognitionComponent implements AfterViewInit, OnDestroy {
               this.capturedImageContainer.nativeElement.appendChild(img);
   
               Swal.fire({
-                title: 'สำเร็จ!',
-                text: 'บันทึกข้อมูลใบหน้าสำเร็จแล้ว',
+                title: 'เพิ่มรูปภาพใบหน้าสำเร็จ!',
                 icon: 'success',
                 confirmButtonText: 'ตกลง'
               }).then((result) => {

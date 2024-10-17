@@ -69,147 +69,85 @@ export class ChecklistCreateComponent implements OnInit {
     );
   }
 
-  ChecklistAdd(): void {
-    // ตรวจสอบว่าเวลาเริ่มต้นไม่เกินเวลาสิ้นสุด
-    if (this.time_start >= this.time_end) {
-        Swal.fire({
-            title: 'เกิดข้อผิดพลาด',
-            text: 'เวลาเริ่มต้นการเช็คชื่อห้ามเกินหรือเท่ากับเวลาสิ้นสุด',
-            icon: 'error',
-            confirmButtonText: 'ตกลง'
-        });
-        return;
+
+ChecklistAdd(): void {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // ตั้งเวลาของวันนี้เป็น 00:00:00 เพื่อตรวจสอบเฉพาะวันที่
+
+  // ตรวจสอบว่าไม่สามารถเลือกวันที่ย้อนหลังได้ แต่อนุญาตให้เลือกวันที่วันนี้หรืออนาคต
+  if (this.date instanceof Date) {
+    const selectedDate = new Date(this.date);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
+      Swal.fire({
+        title: 'วันที่ไม่ถูกต้อง',
+        text: 'ไม่สามารถเลือกวันที่ย้อนหลังได้',
+        icon: 'error',
+        confirmButtonText: 'ตกลง'
+      });
+      return;
     }
+  }
 
-    if (this.subject_time_start >= this.subject_time_end) {
-        Swal.fire({
-            title: 'เกิดข้อผิดพลาด',
-            text: 'เวลาเริ่มต้นวิชาห้ามเกินหรือเท่ากับเวลาสิ้นสุดวิชา',
-            icon: 'error',
-            confirmButtonText: 'ตกลง'
-        });
-        return;
+  // ตรวจสอบว่าเวลาเริ่มต้นไม่เกินเวลาสิ้นสุด
+  if (this.time_start >= this.time_end) {
+    Swal.fire({
+        title: 'เกิดข้อผิดพลาด',
+        text: 'เวลาเริ่มต้นการเช็คชื่อห้ามเกินหรือเท่ากับเวลาสิ้นสุด',
+        icon: 'error',
+        confirmButtonText: 'ตกลง'
+    });
+    return;
+  }
+
+  if (this.subject_time_start >= this.subject_time_end) {
+    Swal.fire({
+        title: 'เกิดข้อผิดพลาด',
+        text: 'เวลาเริ่มต้นวิชาห้ามเกินหรือเท่ากับเวลาสิ้นสุดวิชา',
+        icon: 'error',
+        confirmButtonText: 'ตกลง'
+    });
+    return;
+  }
+
+  const formattedDate = this.formatDate(this.date);
+
+  const ChecklistData = {
+    title: this.title,
+    detail: this.detail,
+    date: formattedDate,
+    time_start: this.time_start,
+    time_end: this.time_end,
+    subject_time_start: this.subject_time_start,
+    subject_time_end: this.subject_time_end,
+    subject_id: this.subject_id,
+    teacher_id: this.teacher_id
+  };
+
+  this.http.post<any>(this.data.apiUrl + "/checklist-add", ChecklistData).subscribe(
+    (response) => {
+      Swal.fire({
+        title: 'เพิ่มรายการเช็คชื่อใหม่สำเร็จ',
+        icon: 'success',
+        confirmButtonText: 'ตกลง'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.router.navigate(['/checklist-manage']);
+        }
+      });
+    },
+    (error) => {
+      Swal.fire({
+        title: 'เกิดข้อผิดพลาด',
+        text: 'ไม่สามารถบันทึกข้อมูลได้',
+        icon: 'error',
+        confirmButtonText: 'ตกลง'
+      });
+      console.error(error);
     }
-
-    const formattedDate = this.formatDate(this.date);
-
-    const ChecklistData = {
-      title: this.title,
-      detail: this.detail,
-      date: formattedDate,
-      time_start: this.time_start,
-      time_end: this.time_end,
-      subject_time_start: this.subject_time_start,
-      subject_time_end: this.subject_time_end,
-      subject_id: this.subject_id,
-      teacher_id: this.teacher_id
-    };
-
-    this.http.post<any>(this.data.apiUrl + "/checklist-add", ChecklistData).subscribe(
-      (response) => {
-        Swal.fire({
-          title: 'เพิ่มรายการเช็คชื่อใหม่สำเร็จ',
-          text: 'บันทึกข้อมูลสำเร็จ',
-          icon: 'success',
-          confirmButtonText: 'ตกลง'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.router.navigate(['/checklist-manage']);
-          }
-        });
-      },
-      (error) => {
-        Swal.fire({
-          title: 'เกิดข้อผิดพลาด',
-          text: 'ไม่สามารถบันทึกข้อมูลได้',
-          icon: 'error',
-          confirmButtonText: 'ตกลง'
-        });
-        console.error(error);
-      }
-    );
+  );
 }
-
-
-// ChecklistAdd(): void {
-//   const today = new Date();
-//   today.setHours(0, 0, 0, 0); // ตั้งเวลาของวันนี้เป็น 00:00:00 เพื่อตรวจสอบเฉพาะวันที่
-
-//   // ตรวจสอบว่าไม่สามารถเลือกวันที่ย้อนหลังได้ แต่อนุญาตให้เลือกวันที่วันนี้หรืออนาคต
-//   if (this.date instanceof Date) {
-//     const selectedDate = new Date(this.date);
-//     selectedDate.setHours(0, 0, 0, 0);
-
-//     if (selectedDate < today) {
-//       Swal.fire({
-//         title: 'วันที่ไม่ถูกต้อง',
-//         text: 'ไม่สามารถเลือกวันที่ย้อนหลังได้',
-//         icon: 'error',
-//         confirmButtonText: 'ตกลง'
-//       });
-//       return;
-//     }
-//   }
-
-//   // ตรวจสอบว่าเวลาเริ่มต้นไม่เกินเวลาสิ้นสุด
-//   if (this.time_start >= this.time_end) {
-//     Swal.fire({
-//         title: 'เกิดข้อผิดพลาด',
-//         text: 'เวลาเริ่มต้นการเช็คชื่อห้ามเกินหรือเท่ากับเวลาสิ้นสุด',
-//         icon: 'error',
-//         confirmButtonText: 'ตกลง'
-//     });
-//     return;
-//   }
-
-//   if (this.subject_time_start >= this.subject_time_end) {
-//     Swal.fire({
-//         title: 'เกิดข้อผิดพลาด',
-//         text: 'เวลาเริ่มต้นวิชาห้ามเกินหรือเท่ากับเวลาสิ้นสุดวิชา',
-//         icon: 'error',
-//         confirmButtonText: 'ตกลง'
-//     });
-//     return;
-//   }
-
-//   const formattedDate = this.formatDate(this.date);
-
-//   const ChecklistData = {
-//     title: this.title,
-//     detail: this.detail,
-//     date: formattedDate,
-//     time_start: this.time_start,
-//     time_end: this.time_end,
-//     subject_time_start: this.subject_time_start,
-//     subject_time_end: this.subject_time_end,
-//     subject_id: this.subject_id,
-//     teacher_id: this.teacher_id
-//   };
-
-//   this.http.post<any>(this.data.apiUrl + "/checklist-add", ChecklistData).subscribe(
-//     (response) => {
-//       Swal.fire({
-//         title: 'เพิ่มรายการเช็คชื่อใหม่สำเร็จ',
-//         text: 'บันทึกข้อมูลสำเร็จ',
-//         icon: 'success',
-//         confirmButtonText: 'ตกลง'
-//       }).then((result) => {
-//         if (result.isConfirmed) {
-//           this.router.navigate(['/checklist-manage']);
-//         }
-//       });
-//     },
-//     (error) => {
-//       Swal.fire({
-//         title: 'เกิดข้อผิดพลาด',
-//         text: 'ไม่สามารถบันทึกข้อมูลได้',
-//         icon: 'error',
-//         confirmButtonText: 'ตกลง'
-//       });
-//       console.error(error);
-//     }
-//   );
-// }
 
   formatDate(date: Date | null): string {
     if (!date) return '';

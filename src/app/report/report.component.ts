@@ -143,124 +143,87 @@ export class ReportComponent implements OnInit {
     return currentMonth < 10 ? '0' + currentMonth : currentMonth.toString();
   }
 
-  updateChart() {
-    if (!this.chartCanvas?.nativeElement || !this.filteredReportData.length) {
-      console.error('Chart canvas element is not available or no data to display.');
-      return;
-    }
 
-    if (this.chart) {
-      this.chart.destroy(); // Destroy the previous chart instance
-    }
 
-    const labels = this.filteredReportData.map(entry => this.formatDateThai(entry.date));
-    const attendedData = this.filteredReportData.map(entry => entry.total_attended);
-    const absentData = this.filteredReportData.map(entry => entry.total_absent);
-    const lateData = this.filteredReportData.map(entry => entry.total_late);
+updateChart() {
+  if (!this.chartCanvas?.nativeElement || !this.filteredReportData.length) {
+    console.error('Chart canvas element is not available or no data to display.');
+    return;
+  }
 
-    this.chart = new Chart(this.chartCanvas.nativeElement, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: 'จำนวนการเข้าเรียน',
-            data: attendedData,
-            backgroundColor: '#28a745',
-          },
-          {
-            label: 'ขาดเรียน',
-            data: absentData,
-            backgroundColor: '#dc3545',
-          },
-          {
-            label: 'มาสาย',
-            data: lateData,
-            backgroundColor: '#ffc107',
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
-          },
-          tooltip: {
-            callbacks: {
-              label: function (tooltipItem) {
-                return tooltipItem.dataset.label + ': ' + tooltipItem.formattedValue;
-              }
+  if (this.chart) {
+    this.chart.destroy(); // Destroy the previous chart instance
+  }
+
+  const labels = this.filteredReportData.map(entry => this.formatDateThai(entry.date));
+  const attendedData = this.filteredReportData.map(entry => entry.total_attended);
+  const absentData = this.filteredReportData.map(entry => entry.total_absent);
+  const lateData = this.filteredReportData.map(entry => entry.total_late);
+
+  this.chart = new Chart(this.chartCanvas.nativeElement, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'จำนวนการเข้าเรียน',
+          data: attendedData,
+          backgroundColor: '#28a745',
+        },
+        {
+          label: 'ขาดเรียน',
+          data: absentData,
+          backgroundColor: '#dc3545',
+        },
+        {
+          label: 'มาสาย',
+          data: lateData,
+          backgroundColor: '#ffc107',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        tooltip: {
+          callbacks: {
+            label: function (tooltipItem) {
+              return tooltipItem.dataset.label + ': ' + tooltipItem.formattedValue + ' คน';
             }
+          }
+        },
+      },
+      scales: {
+        y: {
+          title: {
+            display: true,
+            text: 'จำนวน (คน)', // Y axis label
+            font: {
+              size: 16,
+            },
+          },
+          ticks: {
+            stepSize: 1,
+            callback: function(value) {
+              return Math.floor(Number(value));
+            }
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'วันที่',
+            font: {
+              size: 16,
+            },
           }
         }
       }
-    });
-  }
-
-
-  // updateChart() {
-  //   if (!this.chartCanvas?.nativeElement || !this.filteredReportData.length) {
-  //     console.error('Chart canvas element is not available or no data to display.');
-  //     return;
-  //   }
+    }
+  });
   
-  //   if (this.chart) {
-  //     this.chart.destroy(); // Destroy the previous chart instance
-  //   }
-  
-  //   const labels = this.filteredReportData.map(entry => this.formatDateThai(entry.date));
-  //   const attendedData = this.filteredReportData.map(entry => entry.total_attended);
-  //   const absentData = this.filteredReportData.map(entry => entry.total_absent);
-  //   const lateData = this.filteredReportData.map(entry => entry.total_late);
-  
-  //   this.chart = new Chart(this.chartCanvas.nativeElement, {
-  //     type: 'bar',
-  //     data: {
-  //       labels: labels,
-  //       datasets: [
-  //         {
-  //           label: 'จำนวนการเข้าเรียน',
-  //           data: attendedData,
-  //           backgroundColor: '#28a745',
-  //         },
-  //         {
-  //           label: 'ขาดเรียน',
-  //           data: absentData,
-  //           backgroundColor: '#dc3545',
-  //         },
-  //         {
-  //           label: 'มาสาย',
-  //           data: lateData,
-  //           backgroundColor: '#ffc107',
-  //         }
-  //       ]
-  //     },
-  //     options: {
-  //       responsive: true,
-  //       plugins: {
-  //         legend: {
-  //           position: 'top',
-  //         },
-  //         tooltip: {
-  //           callbacks: {
-  //             label: function (tooltipItem) {
-  //               return tooltipItem.dataset.label + ': ' + tooltipItem.formattedValue;
-  //             }
-  //           }
-  //         }
-  //       },
-  //       scales: {
-  //         y: {
-  //           ticks: {
-  //             stepSize: 1, // กำหนดช่วงของค่าในแกน Y ให้แสดงทีละ 1
-  //             callback: function(value) {
-  //               return Math.floor(Number(value)); // แปลงค่าเป็นตัวเลขและแสดงจำนวนเต็ม
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   });
-  // }  
+}
 }

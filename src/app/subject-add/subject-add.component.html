@@ -22,7 +22,7 @@
             <div class="mb-3">
               <label for="subject_name" class="form-label">ชื่อวิชา :</label>
               <input type="text" class="form-control" id="subject_name" name="subject_name" placeholder="ระบุชื่อวิชา"
-                [(ngModel)]="subject_name" required pattern="^[ก-ฮะ-๙]+$" [ngClass]="{'is-invalid': addSubjectForm.controls['subject_name']?.invalid && (addSubjectForm.controls['subject_name']?.touched || addSubjectForm.controls['subject_name']?.dirty)}">
+                [(ngModel)]="subject_name" required pattern="^[ก-๙เ-์a-zA-Z\s]+$" [ngClass]="{'is-invalid': addSubjectForm.controls['subject_name']?.invalid && (addSubjectForm.controls['subject_name']?.touched || addSubjectForm.controls['subject_name']?.dirty)}">
               <div *ngIf="addSubjectForm.controls['subject_name']?.invalid && (addSubjectForm.controls['subject_name']?.touched || addSubjectForm.controls['subject_name']?.dirty)">
                 <small class="text-danger">กรุณากรอกชื่อวิชาเป็นภาษาไทยเท่านั้น</small>
               </div>
@@ -43,13 +43,13 @@
               <!-- Time Start Field -->
               <div class="col-md-6">
                 <label for="time_start" class="form-label">เวลาเรียนเริ่มต้น :</label>
-                <input type="time" class="form-control" id="time_start" name="time_start" [(ngModel)]="time_start" required [ngClass]="{'is-invalid': addSubjectForm.controls['time_start']?.invalid && (addSubjectForm.controls['time_start']?.touched || addSubjectForm.controls['time_start']?.dirty)}">
+                <input type="time" class="form-control" id="time_start" name="time_start" [(ngModel)]="time_start" required>
               </div>
 
               <!-- Time End Field -->
               <div class="col-md-6">
                 <label for="time_end" class="form-label">เวลาเรียนสิ้นสุด :</label>
-                <input type="time" class="form-control" id="time_end" name="time_end" [(ngModel)]="time_end" required [ngClass]="{'is-invalid': addSubjectForm.controls['time_end']?.invalid && (addSubjectForm.controls['time_end']?.touched || addSubjectForm.controls['time_end']?.dirty)}">
+                <input type="time" class="form-control" id="time_end" name="time_end" [(ngModel)]="time_end" required>
               </div>
             </div>
 

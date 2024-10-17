@@ -233,12 +233,12 @@ export class ChecklistAttendanceComponent implements AfterViewInit, OnDestroy {
                 this.attendance_id = saveResponse?.attendance_id || null;
 
                 Swal.fire({
-                    title: 'การตรวจสอบเสร็จสมบูรณ์',
+                    title: 'ตรวจสอบการเช็คชื่อเข้าเรียน',
                     html: `
                       <strong>ชื่อ:</strong> ${this.verificationResult.fname} ${this.verificationResult.lname}<br>
                       <strong>เวลา:</strong> ${this.verificationResult.time}<br>
-                      <strong>ระยะทาง:</strong> ${this.verificationResult.distance} <br>
-                      <strong>ผลลัพธ์:</strong> ${this.verificationResult.match ? 'ใบหน้าตรง' : 'ใบหน้าไม่ตรง'}
+                      <strong>ค่าความเหมือน:</strong> ${this.verificationResult.distance} <br>
+                      <strong>ผลลัพธ์:</strong> ${this.verificationResult.match ? 'เช็คชื่อสำเร็จ,รูปภาพใบหน้าตรงกับฐานข้อมูล' : 'เช็คชื่อไม่สำเร็จ: ใบหน้าของคุณไม่ตรงกับฐานข้อมูล'}
                     `,
                     icon: 'success',
                     confirmButtonText: 'ตกลง'
@@ -263,12 +263,12 @@ export class ChecklistAttendanceComponent implements AfterViewInit, OnDestroy {
                     ? distances.reduce((acc, val) => acc + val, 0) / distances.length
                     : null;
 
-                Swal.fire({
-                    title: 'ไม่พบผู้ใช้',
-                    text: `ไม่พบผู้ใช้ที่ตรงกับใบหน้าที่ตรวจสอบ ระยะทางเฉลี่ย (distance): ${averageDistance !== null ? averageDistance.toFixed(2) : 'ไม่สามารถคำนวณได้'}`,
-                    icon: 'error',
-                    confirmButtonText: 'ตกลง'
-                });
+                    Swal.fire({
+                      title: 'ตรวจสอบการเช็คชื่อเข้าเรียน',
+                      text: `ไม่พบข้อมูลผู้ใช้ที่ตรงกับใบหน้าที่ตรวจสอบ (ค่าความเหมือน: ${averageDistance !== null ? averageDistance.toFixed(2) : 'ไม่สามารถคำนวณได้'})`,
+                      icon: 'error',
+                      confirmButtonText: 'ตกลง'
+                  })                  
             }
         } else {
             Swal.fire({

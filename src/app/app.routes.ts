@@ -11,7 +11,6 @@ import { StudentManageComponent } from './student-manage/student-manage.componen
 import { StudentImportComponent } from './student-import/student-import.component';
 import { StudentAddComponent } from './student-add/student-add.component';
 import { ReportPersonalComponent } from './report-personal/report-personal.component';
-import { ReportWeekComponent } from './report-week/report-week.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileEditComponent } from './profile-edit/profile-edit.component';
@@ -53,7 +52,6 @@ export const routes: Routes = [
     { 'path': 'report', component: ReportComponent },
     { 'path': 'report-personal', component: ReportPersonalComponent },
     { 'path': 'report-personal-detail/:studentId/:subjectId', component: ReportPersonalDetailComponent },
-    { 'path': 'report-week', component: ReportWeekComponent },
     { 'path': 'report-student', component: ReportStudentComponent },
     { 'path': 'subject-manage', component: SubjectManageComponent },
     { 'path': 'subject-detail/:subjectId', component: SubjectDetailComponent },
